@@ -1,0 +1,62 @@
+{
+  "$schema": "../../skill.schema.json",
+  "schema_version": 2,
+  "id": "sales-prospecting",
+  "title": "Sales and prospecting",
+  "version": "1.0.0",
+  "status": "verified",
+  "customer_proven": false,
+  "summary": "Route a sales-prospecting request to the smallest verified account-and-contact research Skill.",
+  "outcome": "One explicit choice of the verified account-and-contact research workflow, or a clear stop when the request requires an unavailable mutation or broader GTM function.",
+  "boundary": "The router does not run catalog tools, send outreach, write to a CRM, or cover positioning, marketing operations, attribution, forecasting or revenue operations.",
+  "category": "sales-prospecting",
+  "capabilities": [
+    { "id": "company-discovery", "tool_ids": ["hunter.discover"] },
+    { "id": "web-search", "tool_ids": ["serper.google-search"] },
+    { "id": "website-content-extraction", "tool_ids": ["brightdata.web-scrape"] },
+    { "id": "company-email-discovery", "tool_ids": ["hunter.domain-search"] },
+    { "id": "email-verification", "tool_ids": ["hunter.email-verifier"] },
+    { "id": "uk-company-records-research", "tool_ids": ["companies-house.company-search"] }
+  ],
+  "aliases": ["scrollport-sales", "scrollport-leads", "leads-prospecting"],
+  "license": "MIT",
+  "instruction_path": "SKILL.md",
+  "dependencies": {
+    "scrollport_control_tools": [],
+    "catalog_tools": [
+      { "tool_id": "hunter.discover", "required": false, "purpose": "Used only after routing to Sales Qualified Accounts." },
+      { "tool_id": "serper.google-search", "required": false, "purpose": "Used only after routing to Sales Qualified Accounts." },
+      { "tool_id": "brightdata.web-scrape", "required": false, "purpose": "Used only after routing to Sales Qualified Accounts." },
+      { "tool_id": "hunter.domain-search", "required": false, "purpose": "Used only after routing to Sales Qualified Accounts." },
+      { "tool_id": "hunter.email-verifier", "required": false, "purpose": "Used only after routing to Sales Qualified Accounts." },
+      { "tool_id": "companies-house.company-search", "required": false, "purpose": "Used only after routing to Sales Qualified Accounts." }
+    ],
+    "connected_apps": []
+  },
+  "inputs": [
+    "The sales-research outcome or deliverable the user wants",
+    "Any supplied ideal-customer profile, buyer role, geography or target count"
+  ],
+  "outputs": [
+    "One selected verified function Skill and a concise reason",
+    "A clear boundary when the request requires outreach, CRM mutation or a broader GTM function"
+  ],
+  "cost": {
+    "currency": "USD",
+    "model": "Routing is agent-side and makes no paid call.",
+    "trial_safe_max_usd": "0.000000",
+    "notes": "The selected function Skill presents and obtains approval for its own paid plan."
+  },
+  "approvals": [
+    "Ask before installing or updating a missing function Skill; paid and mutation approvals belong to the selected function Skill"
+  ],
+  "compatibility": [
+    "Agent Skills compatible host",
+    "The selected function Skill installed from the same pinned repository revision"
+  ],
+  "evidence": {
+    "verified_at": "2026-08-31",
+    "review_due_at": "2026-09-30",
+    "summary_path": "evidence/2026-08-31-routing-verification.md"
+  }
+}
