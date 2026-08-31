@@ -1,6 +1,6 @@
 ---
 name: sales-qualified-accounts
-description: Build a source-backed account-and-contact list at a caller-approved scale, with relevant decision-makers and verified work emails.
+description: Build a source-backed account-and-contact list at a caller-approved scale, with relevant current decision-makers and verified professional work emails. Use for "build a prospect list," "find ICP-fit accounts," "find decision-makers," "verified B2B contacts," "target account list," or "who should we approach?"
 license: MIT
 metadata:
   scrollport-status: verified
@@ -15,6 +15,19 @@ source evidence.
 
 Use one authorised Scrollport connection and its `apps`, `discover`, `inspect`,
 `run` and `wallet` control tools. Never call a supplier directly.
+
+## Before starting
+
+Use any supplied product, positioning, ICP, existing-customer or suppression
+brief before asking questions. If `.agents/product-marketing.md` exists, read it
+as context; confirm the task-specific geography, hard requirements, exclusions,
+buyer roles, count and budget. Context claims do not prove a candidate fits.
+
+This verified route begins with a narrow ICP and company discovery. If the user
+instead supplies a fixed account list, wants only contact repair, or asks for
+signals on named accounts, state that the repository does not yet have a
+verified function for that distinct job rather than running unnecessary
+discovery.
 
 ## Outcome boundary
 
@@ -250,7 +263,8 @@ about a topic is not proof that it intends to buy.
 
 ## Deliverable
 
-Return:
+Use [the output template](assets/qualified-accounts-template.md) or an equivalent
+structure. Return:
 
 1. the profile, target, selection rule, date and limitations;
 2. accepted prospects ranked with company, domain, fit evidence, person, role,
@@ -286,3 +300,17 @@ The Skill passes only when:
 
 A large spreadsheet without fit evidence, relevant people and verified work
 emails does not pass. A smaller, defensible list does.
+
+## Quality checks
+
+Before delivery, confirm that:
+
+- every accepted company passes every hard requirement with a retained source;
+- the selected person matches the approved buyer-role order and current-company
+  evidence;
+- no buying-signal, intent or sales-qualification claim is inferred from
+  firmographic fit;
+- accepted, incomplete, rejected and suppressed rows remain separate;
+- every public professional email has a current valid verification status; and
+- the human can review the list without reading provider schemas or raw
+  payloads.

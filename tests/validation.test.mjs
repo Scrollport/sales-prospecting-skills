@@ -130,9 +130,19 @@ test("the Sales router, verified function and withheld CRM candidate are canonic
 
 test("qualified accounts keeps the former package ids as v3 aliases", () => {
   const manifest = JSON.parse(readFileSync(join(root, "skills", "sales-qualified-accounts", "skill.json"), "utf8"));
-  assert.equal(manifest.version, "3.0.0");
+  assert.equal(manifest.version, "3.1.0");
   assert(manifest.aliases.includes("scrollport-qualified-accounts"));
   assert(manifest.aliases.includes("scrollport-qualified-accounts-weekly"));
   assert(manifest.inputs.some((input) => input.includes("target number")));
   assert(manifest.inputs.some((input) => input.includes("maximum total research spend")));
+});
+
+test("the public package includes proof, a template and a Claude marketplace", () => {
+  const plugin = JSON.parse(readFileSync(join(root, ".claude-plugin", "plugin.json"), "utf8"));
+  const marketplace = JSON.parse(readFileSync(join(root, ".claude-plugin", "marketplace.json"), "utf8"));
+  assert.equal(plugin.name, "sales-prospecting-skills");
+  assert.equal(plugin.version, marketplace.plugins[0].version);
+  assert.equal(marketplace.plugins[0].source, "./");
+  assert(/not\s+Customer-proven/.test(readFileSync(join(root, "examples", "qualified-accounts-verified-excerpt.md"), "utf8")));
+  assert(readFileSync(join(root, "skills", "sales-qualified-accounts", "assets", "qualified-accounts-template.md"), "utf8").includes("Human review required before outreach"));
 });
