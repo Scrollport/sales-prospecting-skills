@@ -3,7 +3,7 @@
   "schema_version": 2,
   "id": "sales-qualified-accounts",
   "title": "Qualified Accounts to Contact",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "status": "verified",
   "customer_proven": false,
   "summary": "Build an evidence-backed account-and-contact list at a caller-approved scale, with relevant current decision-makers and verified work emails.",
@@ -68,7 +68,8 @@
   "outputs": [
     "Up to the requested number of ranked contact-ready prospects with company fit evidence",
     "One relevant current person and verified professional work email per accepted row",
-    "Incomplete and rejected candidates plus a complete research receipt"
+    "Incomplete and rejected candidates plus a complete research receipt",
+    "Reusable human-review artifact with explicit evidence and uncertainty"
   ],
   "cost": {
     "currency": "USD",

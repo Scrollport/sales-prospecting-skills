@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.1.0 — 2026-08-31
+
+- Add context-first ICP intake and discriminating activation phrases.
+- Add a reusable account-and-contact artifact template and handoff quality
+  checks.
+- Keep the verified discovery route, five-prospect cost ceiling and rehearsal
+  evidence unchanged.
+
 ## 3.0.0 — 2026-08-31
 
 - Move the canonical package into the Sales and prospecting category
