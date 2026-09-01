@@ -58,7 +58,7 @@ test("the canonical repository satisfies its publication contract", () => {
 test("the generated export includes the shared installation guide", () => {
   const install = readFileSync(join(root, "INSTALL.md"), "utf8");
   assert(install.includes("https://scrollport.com/start"));
-  assert(install.includes("unique match in `aliases`"));
+  assert(install.includes("select every"));
   assert(readFileSync(join(root, "scripts", "build-exports.mjs"), "utf8").includes('join(out, "INSTALL.md")'));
 });
 
@@ -116,12 +116,11 @@ test("build output excludes candidates", () => {
   assert(!source.skills.filter((entry) => entry.status === "verified").some((entry) => entry.path.startsWith("candidates/")));
 });
 
-test("the Sales router, verified function and withheld CRM candidate are canonical", () => {
+test("the Sales outcome Skill and withheld CRM candidate are canonical without a package router", () => {
   const source = JSON.parse(readFileSync(join(root, "registry.json"), "utf8"));
   assert.deepEqual(
     source.skills.map(({ id, status, customer_proven }) => ({ id, status, customer_proven })),
     [
-      { id: "sales-prospecting", status: "verified", customer_proven: false },
       { id: "sales-qualified-accounts", status: "verified", customer_proven: false },
       { id: "sales-prospecting-to-crm", status: "draft", customer_proven: false },
     ],

@@ -18,8 +18,8 @@ outcome, not merely that its individual tools returned successful envelopes.
 ## Source and publication
 
 First-party Skills are grouped by stable customer outcome category. This
-repository is the only editable source for the Sales and prospecting router,
-function Skills, validation, evidence and releases. Function Skills remain
+repository is the only editable source for the Sales and prospecting outcome
+Skills, validation, evidence and releases. Outcome Skills remain
 independently addressable inside the category repository; do not create one
 repository per workflow.
 
