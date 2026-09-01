@@ -14,7 +14,6 @@ inspectable.
 
 | If you need to... | Use | Finished artifact |
 | --- | --- | --- |
-| Decide whether the request fits the verified package | [`sales-prospecting`](skills/sales-prospecting/SKILL.md) | One explicit route or an honest stop |
 | Move from ICP to companies, relevant people and verified work emails | [`sales-qualified-accounts`](skills/sales-qualified-accounts/SKILL.md) | Ranked, human-review-ready account-and-contact list |
 | Research and mutate existing CRM contacts | `sales-prospecting-to-crm` is a withheld draft and is not installable | None until the write path is verified |
 
@@ -46,11 +45,8 @@ pipeline, revenue or Customer-proven status.
 
 ## Install
 
-Use the cross-agent installer for the verified function Skill:
-
-```sh
-npx skills add Scrollport/sales-prospecting-skills --skill sales-qualified-accounts
-```
+Give your agent the package setup prompt from Scrollport to install every
+published outcome Skill.
 
 Or add the repository as a Claude Code marketplace and install the package:
 
