@@ -22,11 +22,16 @@ sales qualification, CRM governance or broad revenue operations.
 
 ## Inspect the proof before installing
 
-[The five-prospect verified excerpt](examples/qualified-accounts-verified-excerpt.md)
+The [latest internal verification](skills/sales-qualified-accounts/evidence/2026-09-07-rehearsal.md)
+produced one research lead with a valid professional contact and retained the
+incomplete/rejected accounts at $0.295100. No unresolved payment pain or buying
+opportunity was established; yield depends on the caller's evidence gates.
+
+[The earlier five-prospect excerpt](examples/qualified-accounts-verified-excerpt.md)
 shows the accepted company-fit evidence, role selection, email-verification
 status, rejections, cost and limitation from the public synthetic rehearsal.
 
-The rehearsal completed five contact-ready prospects for **$0.427200** inside a
+That earlier rehearsal completed five contact-ready prospects for **$0.427200** inside a
 **$0.500000** approved ceiling. It proves bounded execution, not reply quality,
 pipeline, revenue or Customer-proven status.
 
