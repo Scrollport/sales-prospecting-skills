@@ -1,5 +1,12 @@
 # Changelog
 
+## 4.0.0 — 2026-09-07
+
+- Separate company fit, observed pain/trigger, current decision-maker and contactability.
+- Support supplied accounts, parent/buyer resolution, exclusions and useful incomplete results.
+- Preserve an explicit demonstrated-pain gate and bounded paid recovery.
+- Rehearse on a public payments-business brief; keep customer proof false.
+
 ## 3.1.0 — 2026-08-31
 
 - Add context-first ICP intake and discriminating activation phrases.

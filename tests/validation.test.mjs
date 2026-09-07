@@ -127,9 +127,9 @@ test("the Sales outcome Skill and withheld CRM candidate are canonical without a
   );
 });
 
-test("qualified accounts keeps the former package ids as v3 aliases", () => {
+test("qualified accounts keeps the former package ids as stable aliases", () => {
   const manifest = JSON.parse(readFileSync(join(root, "skills", "sales-qualified-accounts", "skill.json"), "utf8"));
-  assert.equal(manifest.version, "3.1.0");
+  assert.equal(manifest.version, "4.0.0");
   assert(manifest.aliases.includes("scrollport-qualified-accounts"));
   assert(manifest.aliases.includes("scrollport-qualified-accounts-weekly"));
   assert(manifest.inputs.some((input) => input.includes("target number")));
@@ -143,5 +143,5 @@ test("the public package includes proof, a template and a Claude marketplace", (
   assert.equal(plugin.version, marketplace.plugins[0].version);
   assert.equal(marketplace.plugins[0].source, "./");
   assert(/not\s+Customer-proven/.test(readFileSync(join(root, "examples", "qualified-accounts-verified-excerpt.md"), "utf8")));
-  assert(readFileSync(join(root, "skills", "sales-qualified-accounts", "assets", "qualified-accounts-template.md"), "utf8").includes("Human review required before outreach"));
+  assert(readFileSync(join(root, "skills", "sales-qualified-accounts", "assets", "qualified-accounts-template.md"), "utf8").includes("Outreach/CRM actions are outside this research scope unless separately authorized"));
 });

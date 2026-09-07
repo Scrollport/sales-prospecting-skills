@@ -3,32 +3,74 @@
   "schema_version": 2,
   "id": "sales-qualified-accounts",
   "title": "Qualified Accounts to Contact",
-  "version": "3.1.0",
+  "version": "4.0.0",
   "status": "verified",
   "customer_proven": false,
-  "summary": "Build an evidence-backed account-and-contact list at a caller-approved scale, with relevant current decision-makers and verified work emails.",
-  "outcome": "A ranked, human-review-ready prospect list up to the caller's requested target, containing company fit evidence, one relevant current person and one verified professional work email per accepted row.",
+  "summary": "Research supplied accounts or discover prospects, cross-check fit and current context, and return verified professional contacts with explicit unknowns.",
+  "outcome": "A sourced account decision brief with fit evidence, observed pain or triggers, offer-relevance hypotheses, current decision-makers, verified work emails and explicit rejections.",
   "boundary": "The Skill does not prove need, budget, timing, buying intent or sales qualification; guarantee the requested yield; infer private emails; send outreach; write to a CRM; or exceed the caller-approved spend ceiling.",
   "category": "sales-prospecting",
   "capabilities": [
-    { "id": "company-discovery", "tool_ids": ["hunter.discover"] },
-    { "id": "web-search", "tool_ids": ["serper.google-search"] },
-    { "id": "website-content-extraction", "tool_ids": ["brightdata.web-scrape"] },
-    { "id": "company-email-discovery", "tool_ids": ["hunter.domain-search"] },
-    { "id": "email-verification", "tool_ids": ["hunter.email-verifier"] },
-    { "id": "uk-company-records-research", "tool_ids": ["companies-house.company-search"] }
+    {
+      "id": "company-discovery",
+      "tool_ids": [
+        "hunter.discover"
+      ]
+    },
+    {
+      "id": "web-search",
+      "tool_ids": [
+        "serper.google-search"
+      ]
+    },
+    {
+      "id": "website-content-extraction",
+      "tool_ids": [
+        "brightdata.web-scrape"
+      ]
+    },
+    {
+      "id": "company-email-discovery",
+      "tool_ids": [
+        "hunter.domain-search"
+      ]
+    },
+    {
+      "id": "email-verification",
+      "tool_ids": [
+        "hunter.email-verifier"
+      ]
+    },
+    {
+      "id": "uk-company-records-research",
+      "tool_ids": [
+        "companies-house.company-search"
+      ]
+    }
   ],
-  "aliases": ["scrollport-qualified-accounts", "scrollport-qualified-accounts-weekly", "qualified-accounts-weekly", "accounts-to-contact", "qualified-accounts-to-contact"],
+  "aliases": [
+    "scrollport-qualified-accounts",
+    "scrollport-qualified-accounts-weekly",
+    "qualified-accounts-weekly",
+    "accounts-to-contact",
+    "qualified-accounts-to-contact"
+  ],
   "license": "MIT",
   "instruction_path": "SKILL.md",
   "changelog_path": "CHANGELOG.md",
   "dependencies": {
-    "scrollport_control_tools": ["apps", "discover", "inspect", "run", "wallet"],
+    "scrollport_control_tools": [
+      "apps",
+      "discover",
+      "inspect",
+      "run",
+      "wallet"
+    ],
     "catalog_tools": [
       {
         "tool_id": "hunter.discover",
-        "required": true,
-        "purpose": "Build one structured candidate-company pool from the approved ideal-customer profile."
+        "required": false,
+        "purpose": "Discover a bounded candidate pool when no account list is supplied, or resolve missing company identity."
       },
       {
         "tool_id": "serper.google-search",
@@ -63,24 +105,26 @@
     "The offer or problem used to judge company fit",
     "One buyer role or an ordered set of acceptable roles",
     "A target number of accepted prospects and maximum total research spend",
-    "Existing customer, suppression and do-not-contact domains"
+    "Existing customer, suppression and do-not-contact domains",
+    "Optional supplied account list and a must-have pain or trigger with freshness window"
   ],
   "outputs": [
     "Up to the requested number of ranked contact-ready prospects with company fit evidence",
     "One relevant current person and verified professional work email per accepted row",
     "Incomplete and rejected candidates plus a complete research receipt",
-    "Reusable human-review artifact with explicit evidence and uncertainty"
+    "Reusable human-review artifact with explicit evidence and uncertainty",
+    "Observed pain or trigger, offer relevance, contrary evidence and next qualification question for each account"
   ],
   "cost": {
     "currency": "USD",
     "model": "One or more bounded company-discovery segments plus public research, one contact search, conditional email verification and an optional official company check per attempted prospect.",
     "trial_safe_max_usd": "0.500000",
-    "notes": "The verified trial-safe default is five requested prospects with a $0.50 ceiling. At prices inspected on 28 August 2026, the clean path is $0.096500 per accepted prospect plus discovery calls, so a 100-prospect, $10 request is plausible but not guaranteed when replacement or recovery work is needed. Re-inspect and recalculate every plan."
+    "notes": "Re-inspect and price the exact bounded plan, including minimum billing blocks, discarded candidates and conditional verification. The starter seeks up to five accepted accounts within $0.50 without guaranteeing yield."
   },
   "approvals": [
-    "Approve the exact ideal-customer profile, exclusions, buyer roles, target count, batch plan, paid inputs and maximum before the first metered run",
-    "Approve any provider substitution, expanded profile, candidate examination beyond the approved limit, repeated paid call or spend above the original plan",
-    "Review the completed list before any outreach or system-of-record write"
+    "Use existing authorisation covering offer, hard criteria, selection rules, roles, examination limit and maximum cost",
+    "Pause for server confirmation or a material change beyond the approved scope or retry allowance",
+    "No outreach or CRM write without explicit scope"
   ],
   "compatibility": [
     "Agent Skills compatible host",
@@ -88,8 +132,8 @@
     "A local file or conversation state for resumable research and the final receipt"
   ],
   "evidence": {
-    "verified_at": "2026-08-28",
-    "review_due_at": "2026-09-28",
-    "summary_path": "evidence/2026-08-28-verification.md"
+    "verified_at": "2026-09-07",
+    "review_due_at": "2026-10-07",
+    "summary_path": "evidence/2026-09-07-rehearsal.md"
   }
 }
