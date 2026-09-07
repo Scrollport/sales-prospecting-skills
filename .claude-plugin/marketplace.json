@@ -5,13 +5,13 @@
   },
   "metadata": {
     "description": "Verified Sales and prospecting Skills powered by Scrollport.",
-    "version": "4.0.0"
+    "version": "4.0.1"
   },
   "plugins": [
     {
       "name": "sales-prospecting-skills",
       "description": "Turn a narrow ICP into evidence-backed accounts, relevant people and verified professional work emails.",
-      "version": "4.0.0",
+      "version": "4.0.1",
       "source": "./"
     }
   ]
