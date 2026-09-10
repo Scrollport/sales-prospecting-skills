@@ -31,7 +31,7 @@ function fixture({ frontmatter = true, secret = false, undeclared = false, mutat
     instruction_path: "SKILL.md",
     changelog_path: "CHANGELOG.md",
     dependencies: {
-      scrollport_control_tools: ["discover", "inspect", "run", "wallet"],
+      scrollport_control_tools: ["search_tools", "inspect_tool", "run_tool", "get_run", "list_apps", "get_wallet"],
       catalog_tools: [{ tool_id: "demo.lookup", required: true, purpose: "Fixture lookup" }],
       connected_apps: [],
     },
@@ -45,7 +45,7 @@ function fixture({ frontmatter = true, secret = false, undeclared = false, mutat
   mutateManifest?.(manifest);
   writeFileSync(join(skillDir, "skill.json"), JSON.stringify(manifest));
   const yaml = frontmatter ? "---\nname: fixture-skill\ndescription: Run a fixture lookup when testing independent Skill installation.\nlicense: MIT\n---\n" : "";
-  writeFileSync(join(skillDir, "SKILL.md"), `${yaml}# Fixture\n\nCall discover, inspect, run and wallet. ${dependencyLine}\n\nState: ${credential}\n`);
+  writeFileSync(join(skillDir, "SKILL.md"), `${yaml}# Fixture\n\nCall search_tools, inspect_tool, run_tool, get_run, list_apps and get_wallet. ${dependencyLine}\n\nState: ${credential}\n`);
   writeFileSync(join(skillDir, "CHANGELOG.md"), "# Changelog\n");
   writeFileSync(join(skillDir, "EVIDENCE.md"), "# Evidence\n");
   return dir;
@@ -129,7 +129,7 @@ test("the Sales outcome Skill and withheld CRM candidate are canonical without a
 
 test("qualified accounts keeps the former package ids as stable aliases", () => {
   const manifest = JSON.parse(readFileSync(join(root, "skills", "sales-qualified-accounts", "skill.json"), "utf8"));
-  assert.equal(manifest.version, "4.0.0");
+  assert.equal(manifest.version, "5.0.0");
   assert(manifest.aliases.includes("scrollport-qualified-accounts"));
   assert(manifest.aliases.includes("scrollport-qualified-accounts-weekly"));
   assert(manifest.inputs.some((input) => input.includes("target number")));

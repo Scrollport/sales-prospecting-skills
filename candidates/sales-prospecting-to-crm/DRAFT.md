@@ -16,7 +16,7 @@ freshness. The final CRM update is a separate human-approved step.
 > enrich, verify and CRM step has a validated, live supplier and the complete
 > route is validated against the dedicated launch HubSpot destination.
 
-Use Scrollport's public `apps`, `discover`, `inspect`, `run` and `wallet` tools;
+Use Scrollport's public `list_apps`, `search_tools`, `inspect_tool`, `run_tool`, `get_run` and `get_wallet` tools;
 do not call providers
 directly. Call `apps({ provider: "hubspot" })` before the CRM steps. If HubSpot
 is disconnected, give `connect_url` to the human and wait for them to approve

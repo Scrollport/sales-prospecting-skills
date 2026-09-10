@@ -23,7 +23,7 @@
   "license": "MIT",
   "instruction_path": "DRAFT.md",
   "dependencies": {
-    "scrollport_control_tools": ["apps", "discover", "inspect", "run", "wallet"],
+    "scrollport_control_tools": ["search_tools", "inspect_tool", "run_tool", "get_run", "list_apps", "get_wallet"],
     "catalog_tools": [
       { "tool_id": "hunter.domain-search", "required": true, "purpose": "Find deliberate domain-based contact candidates." },
       { "tool_id": "hunter.email-finder", "required": false, "purpose": "Find an address only when the human supplied a named person." },
@@ -58,7 +58,7 @@
   ],
   "compatibility": [
     "Agent Skills compatible host",
-    "One authorized Scrollport connection with the five public control tools",
+    "One authorized Scrollport connection with the six public control tools",
     "A human-connected HubSpot account for the optional CRM step"
   ],
   "evidence": {
