@@ -3,7 +3,7 @@
   "schema_version": 2,
   "id": "sales-qualified-accounts",
   "title": "Qualified Accounts to Contact",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "status": "verified",
   "customer_proven": false,
   "summary": "Research supplied accounts or discover prospects, cross-check fit and current context, and return verified professional contacts with explicit unknowns.",
@@ -59,13 +59,7 @@
   "instruction_path": "SKILL.md",
   "changelog_path": "CHANGELOG.md",
   "dependencies": {
-    "scrollport_control_tools": [
-      "apps",
-      "discover",
-      "inspect",
-      "run",
-      "wallet"
-    ],
+    "scrollport_control_tools": ["search_tools", "inspect_tool", "run_tool", "get_run", "list_apps", "get_wallet"],
     "catalog_tools": [
       {
         "tool_id": "hunter.discover",
