@@ -58,7 +58,7 @@
   ],
   "compatibility": [
     "Agent Skills compatible host",
-    "One authorized Scrollport connection with the six public control tools",
+    "One authorized Scrollport connection with the required public control tools",
     "A human-connected HubSpot account for the optional CRM step"
   ],
   "evidence": {
