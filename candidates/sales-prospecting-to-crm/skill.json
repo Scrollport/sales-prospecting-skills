@@ -11,7 +11,7 @@
   "boundary": "The candidate does not create contacts, send outreach, expand a list without approval, treat uncertain emails as deliverable or mutate HubSpot without an exact diff approval.",
   "category": "sales-prospecting",
   "capabilities": [
-    { "id": "company-email-discovery", "tool_ids": ["hunter.domain-search"] },
+    { "id": "company-email-discovery", "tool_ids": ["hunter.domain-email-search-flex"] },
     { "id": "person-email-discovery", "tool_ids": ["hunter.email-finder"] },
     { "id": "company-enrichment", "tool_ids": ["akta.company-enrichment"] },
     { "id": "email-verification", "tool_ids": ["hunter.email-verifier"] },
@@ -25,7 +25,7 @@
   "dependencies": {
     "scrollport_control_tools": ["search_tools", "inspect_tool", "run_tool", "get_run", "list_apps", "get_wallet"],
     "catalog_tools": [
-      { "tool_id": "hunter.domain-search", "required": true, "purpose": "Find deliberate domain-based contact candidates." },
+      { "tool_id": "hunter.domain-email-search-flex", "required": true, "purpose": "Find deliberate domain-based contact candidates." },
       { "tool_id": "hunter.email-finder", "required": false, "purpose": "Find an address only when the human supplied a named person." },
       { "tool_id": "akta.company-enrichment", "required": true, "purpose": "Provide structured firmographic evidence." },
       { "tool_id": "hunter.email-verifier", "required": true, "purpose": "Verify the selected address." },

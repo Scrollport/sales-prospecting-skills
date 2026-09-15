@@ -42,7 +42,7 @@ the human instead of pretending it was written.
 Discover each intent and inspect the selected result immediately before use.
 The route to validate is:
 
-1. `hunter.domain-search` to find people already known for a domain; use
+1. `hunter.domain-email-search-flex` to find people already known for a domain; use
    `hunter.email-finder` only when the human supplied a named person.
 2. Local filtering against the requested role. This is the validation step and
    costs nothing.

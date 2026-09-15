@@ -129,7 +129,7 @@ test("the Sales outcome Skill and withheld CRM candidate are canonical without a
 
 test("qualified accounts keeps the former package ids as stable aliases", () => {
   const manifest = JSON.parse(readFileSync(join(root, "skills", "sales-qualified-accounts", "skill.json"), "utf8"));
-  assert.equal(manifest.version, "5.0.0");
+  assert.equal(manifest.version, "5.0.1");
   assert(manifest.aliases.includes("scrollport-qualified-accounts"));
   assert(manifest.aliases.includes("scrollport-qualified-accounts-weekly"));
   assert(manifest.inputs.some((input) => input.includes("target number")));

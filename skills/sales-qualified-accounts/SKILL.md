@@ -56,7 +56,7 @@ Discover each intent, then inspect the selected current contract. Preferred rout
 | `hunter.discover` | Structured candidates or identity lookup for supplied domains |
 | `serper.google-search` | Current role, material fit claims, triggers and contrary evidence |
 | `brightdata.web-scrape` | First-party offer, locations, team or source underlying a trigger |
-| `hunter.domain-search` | Public professional contact sources and verification state |
+| `hunter.domain-email-search-flex` | Public professional contact sources and verification state |
 | `hunter.email-verifier` | Fresh deliverability when the selected address needs it |
 | `companies-house.company-search` | UK legal identity when applicable |
 
