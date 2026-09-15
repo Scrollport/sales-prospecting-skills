@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.0.1 — 2026-09-15
+
+- Point the existing workflow at the preferred published catalog route after duplicate consolidation; preserve its method, budgets and verification dates.
+
 ## 4.0.0 — 2026-09-07
 
 - Separate company fit, observed pain/trigger, current decision-maker and contactability.

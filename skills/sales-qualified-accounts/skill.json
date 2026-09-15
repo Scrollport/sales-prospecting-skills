@@ -3,7 +3,7 @@
   "schema_version": 2,
   "id": "sales-qualified-accounts",
   "title": "Qualified Accounts to Contact",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "status": "verified",
   "customer_proven": false,
   "summary": "Research supplied accounts or discover prospects, cross-check fit and current context, and return verified professional contacts with explicit unknowns.",
@@ -32,7 +32,7 @@
     {
       "id": "company-email-discovery",
       "tool_ids": [
-        "hunter.domain-search"
+        "hunter.domain-email-search-flex"
       ]
     },
     {
@@ -59,7 +59,14 @@
   "instruction_path": "SKILL.md",
   "changelog_path": "CHANGELOG.md",
   "dependencies": {
-    "scrollport_control_tools": ["search_tools", "inspect_tool", "run_tool", "get_run", "list_apps", "get_wallet"],
+    "scrollport_control_tools": [
+      "search_tools",
+      "inspect_tool",
+      "run_tool",
+      "get_run",
+      "list_apps",
+      "get_wallet"
+    ],
     "catalog_tools": [
       {
         "tool_id": "hunter.discover",
@@ -77,7 +84,7 @@
         "purpose": "Extract one selected first-party company page as evidence for fit and identity."
       },
       {
-        "tool_id": "hunter.domain-search",
+        "tool_id": "hunter.domain-email-search-flex",
         "required": true,
         "purpose": "Find a relevant current person and public professional work email for an accepted company."
       },
