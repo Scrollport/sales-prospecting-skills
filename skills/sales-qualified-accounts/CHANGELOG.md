@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.1.0 — 2026-10-12
+
+- Reach the confirmed buyer when domain search does not: one title-filtered
+  people search when sources name nobody, then a person email finder by name
+  and domain with one fallback, and a lower-cost verifier. Pattern-guessed
+  addresses remain prohibited.
+- Reverified after the overdue 7 October review on a UK dental-group brief:
+  one contact-ready account, two research-qualified with contacts incomplete
+  and one rejected, at $0.468600 including diagnosis.
+
 ## 5.0.1 — 2026-09-15
 
 - Point the existing workflow at the preferred published catalog route after duplicate consolidation; preserve its method, budgets and verification dates.

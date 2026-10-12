@@ -116,11 +116,12 @@ test("build output excludes candidates", () => {
   assert(!source.skills.filter((entry) => entry.status === "verified").some((entry) => entry.path.startsWith("candidates/")));
 });
 
-test("the Sales outcome Skill and withheld CRM candidate are canonical without a package router", () => {
+test("the Sales outcome Skills and withheld CRM candidate are canonical without a package router", () => {
   const source = JSON.parse(readFileSync(join(root, "registry.json"), "utf8"));
   assert.deepEqual(
     source.skills.map(({ id, status, customer_proven }) => ({ id, status, customer_proven })),
     [
+      { id: "lead-list", status: "verified", customer_proven: false },
       { id: "sales-qualified-accounts", status: "verified", customer_proven: false },
       { id: "sales-prospecting-to-crm", status: "draft", customer_proven: false },
     ],
@@ -129,11 +130,21 @@ test("the Sales outcome Skill and withheld CRM candidate are canonical without a
 
 test("qualified accounts keeps the former package ids as stable aliases", () => {
   const manifest = JSON.parse(readFileSync(join(root, "skills", "sales-qualified-accounts", "skill.json"), "utf8"));
-  assert.equal(manifest.version, "5.0.1");
+  assert.equal(manifest.version, "5.1.0");
   assert(manifest.aliases.includes("scrollport-qualified-accounts"));
   assert(manifest.aliases.includes("scrollport-qualified-accounts-weekly"));
   assert(manifest.inputs.some((input) => input.includes("target number")));
   assert(manifest.inputs.some((input) => input.includes("maximum total research spend")));
+});
+
+test("lead list stays a fast list that points to research for evidence", () => {
+  const manifest = JSON.parse(readFileSync(join(root, "skills", "lead-list", "skill.json"), "utf8"));
+  const instructions = readFileSync(join(root, "skills", "lead-list", "SKILL.md"), "utf8");
+  assert.equal(manifest.customer_proven, false);
+  assert.equal(manifest.cost.trial_safe_max_usd, "0.250000");
+  assert(instructions.includes("sales-qualified-accounts"));
+  assert(/Never guess an address from a pattern/.test(instructions));
+  assert(readFileSync(join(root, "skills", "lead-list", "assets", "lead-list-template.csv"), "utf8").startsWith("company,domain,decision_maker,title"));
 });
 
 test("the public package includes proof, a template and a Claude marketplace", () => {
