@@ -5,13 +5,13 @@
   },
   "metadata": {
     "description": "Verified Sales and prospecting Skills powered by Scrollport.",
-    "version": "5.1.0"
+    "version": "5.2.0"
   },
   "plugins": [
     {
       "name": "sales-prospecting-skills",
       "description": "Build fast lead lists or evidence-backed account research: companies, relevant people and verified professional work emails.",
-      "version": "5.1.0",
+      "version": "5.2.0",
       "source": "./"
     }
   ]
