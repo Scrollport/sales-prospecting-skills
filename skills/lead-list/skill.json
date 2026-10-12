@@ -1,0 +1,118 @@
+{
+  "$schema": "../../skill.schema.json",
+  "schema_version": 2,
+  "id": "lead-list",
+  "title": "Lead List",
+  "version": "1.0.0",
+  "status": "verified",
+  "customer_proven": false,
+  "summary": "Turn a one-sentence customer profile into companies, a decision-maker at each and a verified work email, with the bill for every paid call.",
+  "outcome": "A CSV of companies, one title-matched decision-maker per company and their verified work email, with the funnel, skipped rows and a per-call receipt.",
+  "boundary": "The Skill judges company fit from discovery data only and does not research need, timing or intent; it does not guarantee yield, guess or return personal emails, send outreach, write to a CRM or exceed the caller-approved ceiling.",
+  "category": "sales-prospecting",
+  "capabilities": [
+    {
+      "id": "company-discovery",
+      "tool_ids": [
+        "hunter.discover"
+      ]
+    },
+    {
+      "id": "people-discovery",
+      "tool_ids": [
+        "leadmagic.employee-finder"
+      ]
+    },
+    {
+      "id": "person-email-discovery",
+      "tool_ids": [
+        "quickenrich.people-email-find",
+        "leadmagic.people-email-find"
+      ]
+    },
+    {
+      "id": "email-verification",
+      "tool_ids": [
+        "millionverifier.people-email-verify"
+      ]
+    }
+  ],
+  "aliases": [
+    "lead-list-builder",
+    "fast-lead-list",
+    "decision-maker-emails"
+  ],
+  "license": "MIT",
+  "instruction_path": "SKILL.md",
+  "changelog_path": "CHANGELOG.md",
+  "dependencies": {
+    "scrollport_control_tools": [
+      "search_tools",
+      "inspect_tool",
+      "run_tool",
+      "get_run",
+      "get_wallet"
+    ],
+    "catalog_tools": [
+      {
+        "tool_id": "hunter.discover",
+        "required": true,
+        "purpose": "Discover up to 100 candidate companies for a natural-language profile in one call."
+      },
+      {
+        "tool_id": "leadmagic.employee-finder",
+        "required": true,
+        "purpose": "List people and their titles at a shortlisted company domain."
+      },
+      {
+        "tool_id": "quickenrich.people-email-find",
+        "required": true,
+        "purpose": "Find the selected person's work email cheaply from a profile URL or name and domain."
+      },
+      {
+        "tool_id": "leadmagic.people-email-find",
+        "required": false,
+        "purpose": "Fallback work-email finder used once when the first finder returns no email."
+      },
+      {
+        "tool_id": "millionverifier.people-email-verify",
+        "required": true,
+        "purpose": "Verify the deliverability of each work email found."
+      }
+    ],
+    "connected_apps": []
+  },
+  "inputs": [
+    "A one-sentence customer profile with business type, geography and size",
+    "Decision-maker titles in priority order",
+    "The number of companies to work through and a total spend ceiling",
+    "Existing customer, competitor and suppressed domains, and any earlier list to skip"
+  ],
+  "outputs": [
+    "A CSV with company, domain, decision-maker, title, profile URL, work email and verification status",
+    "The funnel from companies discovered to emails verified",
+    "Skipped companies and people with the reason",
+    "A receipt with tool, provider, run id and settled cost for every paid call, and the total"
+  ],
+  "cost": {
+    "currency": "USD",
+    "model": "One company-discovery call, then per shortlisted company one people search, up to two work-email lookups and one verification.",
+    "trial_safe_max_usd": "0.250000",
+    "notes": "Inspect current prices before quoting. Three companies settled at $0.082900 in the 12 October 2026 verification run; the quote uses per-call maximums and is higher."
+  },
+  "approvals": [
+    "Approve the plan and total ceiling once before the first paid call",
+    "Ask again before any step that would exceed the approved ceiling",
+    "No outreach or CRM write without explicit scope"
+  ],
+  "compatibility": [
+    "Agent Skills compatible host",
+    "One authorized Scrollport connection with discover, inspect, run and wallet",
+    "A local file for the CSV and receipt, so later runs can skip existing rows"
+  ],
+  "evidence": {
+    "verified_at": "2026-10-12",
+    "review_due_at": "2026-11-11",
+    "summary_path": "evidence/2026-10-12-verification.md"
+  }
+}

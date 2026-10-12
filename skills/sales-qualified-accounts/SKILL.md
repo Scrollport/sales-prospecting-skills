@@ -57,7 +57,11 @@ Discover each intent, then inspect the selected current contract. Preferred rout
 | `serper.google-search` | Current role, material fit claims, triggers and contrary evidence |
 | `brightdata.web-scrape` | First-party offer, locations, team or source underlying a trigger |
 | `hunter.domain-email-search-flex` | Public professional contact sources and verification state |
+| `findymail.search-employees` | A current person holding an approved title, when sources name nobody |
+| `quickenrich.people-email-find` | Work address for a confirmed approved-role person that domain search lacks |
+| `leadmagic.people-email-find` | One fallback lookup when the first finder returns no address |
 | `hunter.email-verifier` | Fresh deliverability when the selected address needs it |
+| `millionverifier.people-email-verify` | Lower-cost deliverability check for a finder-returned address |
 | `companies-house.company-search` | UK legal identity when applicable |
 
 Structured company data and first-party sources establish identity; dated sources
@@ -105,17 +109,24 @@ wait is not a failed provider operation.
    needed to verify any remaining hypothesis. Do not call a company hot just
    because it operates in the right sector.
 4. **Identify the right person before verifying an address.** Search the approved
-   role order, then use domain search with the narrowest supported department/
-   seniority filter and a bounded limit. A department tag or an executive label
-   is not evidence of buying authority. Resolve a group-level buyer before
+   role order in first-party and dated sources. When no current approved-role
+   person is named, run one title-filtered people search at the domain with the
+   approved titles and a result count of one. Then use domain search with the
+   narrowest supported department/seniority filter and a bounded limit. When it
+   does not return the confirmed person's address, look the person up once by
+   name and domain or profile URL with a person email finder, and use the
+   fallback finder at most once. Domain search often returns finance staff or
+   other executives rather than the buyer; do not accept them as the buyer.
+   A department tag or an executive label is not evidence of buying authority. Resolve a group-level buyer before
    spending on local-venue contacts when procurement is centralised.
    Cross-check current employer and role
    against a company page or dated professional source. Seniority, email
    confidence and Companies House directorship alone do not establish ownership
    of the buying decision. Retain a functional decision-maker over an unrelated
    executive. A generic inbox is a business contact fallback, not a named buyer.
-5. **Verify the professional contact.** Use returned source-backed work addresses;
-   never infer them from a pattern or use private personal addresses. Reuse a
+5. **Verify the professional contact.** Use work addresses returned by domain
+   search or a person email finder; never infer them yourself from a pattern
+   or use private personal addresses. Reuse a
    valid verification dated within 90 days unless the caller requires fresher
    evidence. Otherwise verify once; allow one budgeted retry after a terminal provider
    error, then report unresolved status. Accept-all, unknown, pending and failed are

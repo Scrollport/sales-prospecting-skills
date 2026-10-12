@@ -3,7 +3,7 @@
   "schema_version": 2,
   "id": "sales-qualified-accounts",
   "title": "Qualified Accounts to Contact",
-  "version": "5.0.1",
+  "version": "5.1.0",
   "status": "verified",
   "customer_proven": false,
   "summary": "Research supplied accounts or discover prospects, cross-check fit and current context, and return verified professional contacts with explicit unknowns.",
@@ -38,13 +38,27 @@
     {
       "id": "email-verification",
       "tool_ids": [
-        "hunter.email-verifier"
+        "hunter.email-verifier",
+        "millionverifier.people-email-verify"
       ]
     },
     {
       "id": "uk-company-records-research",
       "tool_ids": [
         "companies-house.company-search"
+      ]
+    },
+    {
+      "id": "people-discovery",
+      "tool_ids": [
+        "findymail.search-employees"
+      ]
+    },
+    {
+      "id": "person-email-discovery",
+      "tool_ids": [
+        "quickenrich.people-email-find",
+        "leadmagic.people-email-find"
       ]
     }
   ],
@@ -97,6 +111,26 @@
         "tool_id": "companies-house.company-search",
         "required": false,
         "purpose": "Confirm the official identity and active status of a UK company when applicable."
+      },
+      {
+        "tool_id": "findymail.search-employees",
+        "required": false,
+        "purpose": "Find one current person holding an approved title at the domain when sources name nobody."
+      },
+      {
+        "tool_id": "quickenrich.people-email-find",
+        "required": false,
+        "purpose": "Find the work address of a confirmed approved-role person when domain search does not return it."
+      },
+      {
+        "tool_id": "leadmagic.people-email-find",
+        "required": false,
+        "purpose": "Fallback work-address lookup used at most once when the first finder returns no address."
+      },
+      {
+        "tool_id": "millionverifier.people-email-verify",
+        "required": false,
+        "purpose": "Lower-cost deliverability check for a finder-returned work address."
       }
     ],
     "connected_apps": []
@@ -133,8 +167,8 @@
     "A local file or conversation state for resumable research and the final receipt"
   ],
   "evidence": {
-    "verified_at": "2026-09-07",
-    "review_due_at": "2026-10-07",
-    "summary_path": "evidence/2026-09-07-rehearsal.md"
+    "verified_at": "2026-10-12",
+    "review_due_at": "2026-11-11",
+    "summary_path": "evidence/2026-10-12-reverification.md"
   }
 }

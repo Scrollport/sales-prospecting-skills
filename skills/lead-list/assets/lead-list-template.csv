@@ -1,0 +1,2 @@
+company,domain,decision_maker,title,profile_url,work_email,email_status,email_source_tool,verification_tool,notes
+Example Co,example.com,Example Person,Chief Executive Officer,https://www.linkedin.com/in/example,person@example.com,verified,quickenrich.people-email-find,millionverifier.people-email-verify,Synthetic example row

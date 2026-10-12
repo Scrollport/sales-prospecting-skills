@@ -14,6 +14,7 @@ inspectable.
 
 | If you need to... | Use | Finished artifact |
 | --- | --- | --- |
+| Get a fast list of decision-makers and verified work emails from a one-sentence profile | [`lead-list`](skills/lead-list/SKILL.md) | CSV of companies, one decision-maker each and a verified work email, with the bill per call |
 | Move from ICP to companies, relevant people and verified work emails | [`sales-qualified-accounts`](skills/sales-qualified-accounts/SKILL.md) | Ranked, human-review-ready account-and-contact list |
 | Research and mutate existing CRM contacts | `sales-prospecting-to-crm` is a withheld draft and is not installable | None until the write path is verified |
 
@@ -22,18 +23,17 @@ sales qualification, CRM governance or broad revenue operations.
 
 ## Inspect the proof before installing
 
-The [latest internal verification](skills/sales-qualified-accounts/evidence/2026-09-07-rehearsal.md)
-produced one research lead with a valid professional contact and retained the
-incomplete/rejected accounts at $0.295100. No unresolved payment pain or buying
-opportunity was established; yield depends on the caller's evidence gates.
+- **Lead List**, [12 October 2026 live run](skills/lead-list/evidence/2026-10-12-verification.md):
+  - 100 UK fintech companies, 30 people and 3 decision-makers.
+  - 3 of 3 work emails found and verified.
+  - $0.082900 for 10 paid calls.
+  - Fit is judged from discovery data only.
+- **Qualified Accounts to Contact**, [12 October 2026 reverification](skills/sales-qualified-accounts/evidence/2026-10-12-reverification.md):
+  - A UK dental-group brief returned one contact-ready account, two research-qualified accounts with contacts incomplete, and one rejection.
+  - $0.468600, including diagnosis of a contact-route gap that 5.1.0 fixes.
+  - [The earlier five-prospect excerpt](examples/qualified-accounts-verified-excerpt.md) shows the full report format.
 
-[The earlier five-prospect excerpt](examples/qualified-accounts-verified-excerpt.md)
-shows the accepted company-fit evidence, role selection, email-verification
-status, rejections, cost and limitation from the public synthetic rehearsal.
-
-That earlier rehearsal completed five contact-ready prospects for **$0.427200** inside a
-**$0.500000** approved ceiling. It proves bounded execution, not reply quality,
-pipeline, revenue or Customer-proven status.
+Neither run proves reply quality, pipeline, revenue or Customer-proven status.
 
 ## Why this package is different
 

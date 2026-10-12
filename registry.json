@@ -4,6 +4,12 @@
   "repository": "https://github.com/Scrollport/sales-prospecting-skills",
   "skills": [
     {
+      "id": "lead-list",
+      "path": "skills/lead-list",
+      "status": "verified",
+      "customer_proven": false
+    },
+    {
       "id": "sales-qualified-accounts",
       "path": "skills/sales-qualified-accounts",
       "status": "verified",
