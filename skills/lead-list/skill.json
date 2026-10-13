@@ -3,7 +3,7 @@
   "schema_version": 2,
   "id": "lead-list",
   "title": "Lead List",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "status": "verified",
   "customer_proven": false,
   "summary": "Turn a one-sentence customer profile into companies, a decision-maker at each and a verified work email, with the bill for every paid call.",
@@ -20,7 +20,8 @@
     {
       "id": "people-discovery",
       "tool_ids": [
-        "leadmagic.employee-finder"
+        "leadmagic.employee-finder",
+        "findymail.search-employees"
       ]
     },
     {
@@ -65,6 +66,11 @@
         "purpose": "List people and their titles at a shortlisted company domain."
       },
       {
+        "tool_id": "findymail.search-employees",
+        "required": false,
+        "purpose": "Fallback title-filtered people search, used once per company with count 1 only when the first people search is still refused after one retry."
+      },
+      {
         "tool_id": "quickenrich.people-email-find",
         "required": true,
         "purpose": "Find the selected person's work email cheaply from a profile URL or name and domain."
@@ -96,9 +102,9 @@
   ],
   "cost": {
     "currency": "USD",
-    "model": "One company-discovery call, then per shortlisted company one people search, up to two work-email lookups and one verification.",
+    "model": "One company-discovery call, then per shortlisted company one people search (or its fallback when the provider refuses), up to two work-email lookups and one verification.",
     "trial_safe_max_usd": "0.250000",
-    "notes": "Inspect current prices before quoting. Three companies settled at $0.082900 in the 12 October 2026 verification run; the quote uses per-call maximums and is higher."
+    "notes": "Inspect current prices before quoting. Three companies settled at $0.082900 in the 12 October 2026 verification run; the quote uses per-call maximums and is higher. A refused call is not charged, so the fallback people search replaces the first one rather than adding to it."
   },
   "approvals": [
     "Approve the plan and total ceiling once before the first paid call",

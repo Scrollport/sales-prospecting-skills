@@ -45,6 +45,7 @@ step first:
 | --- | --- | --- |
 | Find companies | `hunter.discover` | One call returns up to 100 candidates for a natural-language profile |
 | People at a company | `leadmagic.employee-finder` | Up to 20 people with titles per domain; use a limit of 10 |
+| People, fallback | `findymail.search-employees` | Only when the people search is still refused after one retry; pass the title list and set `count` to 1 |
 | Work email, first try | `quickenrich.people-email-find` | Accepts a LinkedIn profile URL or name plus domain; a valid no-match returns a null email |
 | Work email, fallback | `leadmagic.people-email-find` | Use once per person only when the first try finds nothing |
 | Verify the email | `millionverifier.people-email-verify` | Real-time deliverability check |
@@ -53,11 +54,12 @@ If a preferred tool is unavailable, choose the closest live alternative from
 `search_tools`, inspect it and say so in the plan. Never rely on a remembered
 price.
 
-Quote the maximum: one discovery call, plus one people call per company, plus
-two email calls and one verification per company. Show the plan, the per-call
-maximums and the total, then ask once for approval of the ceiling. Inside that
-approval do not ask again for each company. Stop and ask before anything that
-would exceed it.
+Quote the maximum: one discovery call, then per company the dearer of the two
+people searches, two email calls and one verification. A refused call is not
+charged, so the fallback replaces the first people search rather than adding
+to it. Show the plan, the per-call maximums and the total, then ask once for
+approval of the ceiling. Inside that approval do not ask again for each
+company. Stop and ask before anything that would exceed it.
 
 Before every paid call check, using decimal USD strings:
 spent + outstanding holds + next maximum <= approved ceiling, and
@@ -78,6 +80,15 @@ next maximum <= wallet available (which already excludes holds).
    is not proof of buying authority. If nobody matches, record the company as
    having no matching decision-maker and move on; do not buy more people
    searches to fill the count.
+
+   If the people search fails because the provider API is overloaded, down or
+   rate limited, nothing was charged and the failure says nothing about the
+   company. Wait a minute, then retry once as a new request with a new UUID. If
+   it is refused again, run the fallback people search once with the title
+   list and `count` 1: its first result is the decision-maker, and an empty
+   result means no matching decision-maker. If the fallback is refused too,
+   record the company as "people search unavailable", never as having no
+   decision-maker.
 4. **Find the work email.** Try the cheaper email finder first with the
    person's profile URL, or name and company domain. If it returns no email,
    try the fallback finder once. Never guess an address from a pattern and
@@ -98,8 +109,8 @@ columns, plus a short summary with:
   makers matched, emails found, emails verified.
 - **The bill:** one row per paid call with tool, provider, run id and final
   cost, and the total. Report settled costs, not quotes.
-- **What was skipped and why:** excluded companies, no matching title, no email
-  found, unverified status.
+- **What was skipped and why:** excluded companies, no matching title, people
+  search unavailable, no email found, unverified status.
 - **The next step:** for example, research the accepted companies with the
   `sales-qualified-accounts` Skill before outreach.
 
