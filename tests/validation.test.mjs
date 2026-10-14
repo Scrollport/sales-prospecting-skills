@@ -184,7 +184,7 @@ test("Research My Accounts keeps its id and former ids and asks five plain quest
   const manifest = readJson("skills/sales-qualified-accounts/skill.json");
   const instructions = flat(read("skills/sales-qualified-accounts/SKILL.md"));
   assert.equal(manifest.title, "Research My Accounts");
-  assert.equal(manifest.version, "6.0.0");
+  assert.equal(manifest.version, "6.1.0");
   assert.equal(manifest.outcome, "Paste companies; learn which to contact now, why (with dated sources) and whom.");
   for (const alias of ["scrollport-qualified-accounts", "scrollport-qualified-accounts-weekly", "qualified-accounts-to-contact", "research-my-accounts"]) {
     assert(manifest.aliases.includes(alias), alias);
@@ -193,9 +193,10 @@ test("Research My Accounts keeps its id and former ids and asks five plain quest
   assert(manifest.inputs[0].startsWith("What you sell"));
   assert(manifest.inputs.some((input) => input.includes("default 10")));
   assert(manifest.outputs.length <= 5);
-  // The spend input became one computed maximum that the user approves; the trial is five companies.
+  // The spend input became one computed maximum that the user approves; the trial is five
+  // companies, priced for an agent that cannot read web pages itself.
   assert(manifest.approvals.some((approval) => approval.includes("one maximum price")));
-  assert.equal(manifest.cost.trial_safe_max_usd, "0.770000");
+  assert.equal(manifest.cost.trial_safe_max_usd, "0.830000");
   // The former examination and freshness inputs became defaults.
   assert(instructions.includes("up to twice the number asked for in all"));
   assert(instructions.includes("Anything older than 90 days does not count"));
@@ -207,27 +208,66 @@ test("Research My Accounts keeps its id and former ids and asks five plain quest
   assert(instructions.includes("Work on up to three companies at once"));
 });
 
+test("Research My Accounts applies the fixes from its 14 October verification", () => {
+  const instructions = flat(read("skills/sales-qualified-accounts/SKILL.md"));
+  // Company data from a same-day Find Leads hand-off is reused as the first source.
+  assert(instructions.includes("If Find Leads handed these companies over today, reuse its company data: it counts as the first of the three sources"));
+  // A relative news date is read from the item itself.
+  assert(instructions.includes("open the item and read its exact date"));
+  // An award is a why-now only when recent and relevant to the offer.
+  assert(instructions.includes("An award counts only if it is from the last 90 days and relates to what the user sells"));
+  // The quote allows a paid page read when a site blocks the agent's own reader.
+  assert(instructions.includes("one page read, in case a site blocks your own reader"));
+  // Not yet without a why-now gets an opening question based on fit.
+  assert(instructions.includes("For Not yet with no why now, base the question on fit instead"));
+  // A website that redirects to another company means merged or acquired.
+  assert(instructions.includes("If their website now redirects to another company's site, the verdict is Skip"));
+});
+
 test("Find Leads promises 25 verified decision-makers and offers research on the top 10", () => {
   const manifest = readJson("skills/lead-list/skill.json");
   const instructions = flat(read("skills/lead-list/SKILL.md"));
   assert.equal(manifest.title, "Find Leads");
-  assert.equal(manifest.version, "2.0.0");
+  assert.equal(manifest.version, "2.1.0");
   assert.equal(manifest.outcome, "Describe your customer; get 25 decision-makers with verified work emails and why each company fits.");
   assert.equal(manifest.customer_proven, false);
   // The trial is the smallest choice, 10 contacts, priced from the 14 October 2026 inspection.
-  assert.equal(manifest.cost.trial_safe_max_usd, "0.960000");
+  assert.equal(manifest.cost.trial_safe_max_usd, "0.710000");
   assert(manifest.inputs.length <= 5 && manifest.outputs.length <= 5);
   assert(manifest.inputs.some((input) => input.includes("default 25, one per company")));
   assert(manifest.aliases.includes("find-leads"));
   assert(instructions.includes("Never decide fit from the name alone"));
   assert(instructions.includes("Research the top 10"));
+  // With fewer than 10 ready, every ready contact is handed over.
+  assert(instructions.includes("or all of them when fewer than 10 are ready"));
   assert(instructions.includes("`sales-qualified-accounts`"));
   assert(instructions.includes("Never guess an address from a pattern"));
   assert(instructions.includes("test first: send at most 50, keep going only if bounces stay under 1%"));
   assert(instructions.includes("GDPR Article 14"));
 });
 
-test("both Skills share one people, email and check route", () => {
+test("Find Leads applies the fixes from its failed 14 October run", () => {
+  const instructions = flat(read("skills/lead-list/SKILL.md"));
+  // Default titles follow the kind and size of company, and the plan shows them.
+  assert(instructions.includes("| Accountants, law firms, agencies and consultancies | Managing Partner, Partner, Director, Owner |"));
+  assert(instructions.includes("| Any other company with up to 10 staff | Owner, Founder, Director |"));
+  assert(instructions.includes("show the ones you will use in the plan"));
+  // Hunter's paid title search runs only after the staff list misses, and only where Hunter knows people.
+  assert(instructions.includes("only when the list has no match** and the company search showed Hunter knows named people there"));
+  // A poor hit rate pauses the run early.
+  assert(instructions.includes("After the first 10 companies you searched for people, count how many gave a ready contact. If fewer than 3 did, pause"));
+  // A free redirect check catches merged or acquired firms before money is spent on them.
+  assert(instructions.includes("Check the website first (free)"));
+  assert(instructions.includes("where it ends up after redirects"));
+  // Source URLs are the page the fact came from.
+  assert(instructions.includes("never a search-results link such as google.com/search"));
+  // The quote follows the new route.
+  assert(instructions.includes("$1.76 for 25"));
+});
+
+test("both Skills share one people, email and check route, staff list first", () => {
+  const titleTable = (text) => text.slice(text.indexOf("| Company | Default titles |"), text.indexOf("If the last row applies"));
+  const tables = [];
   for (const id of SKILLS) {
     const manifest = readJson(`skills/${id}/skill.json`);
     const tools = new Map(manifest.dependencies.catalog_tools.map((tool) => [tool.tool_id, tool]));
@@ -236,14 +276,25 @@ test("both Skills share one people, email and check route", () => {
     assert.equal(tools.get("hunter.domain-email-search-flex").required, true);
     assert.equal(tools.get("leadmagic.employee-finder").required, true);
     assert.equal(tools.get("findymail.search-employees").required, false);
-    const instructions = flat(read(`skills/${id}/SKILL.md`));
-    assert(instructions.includes("A refused call costs nothing: move to the next route at once."));
+    const raw = read(`skills/${id}/SKILL.md`);
+    const instructions = flat(raw);
+    // The staff list comes first; a paid title search only when it has no match; Findymail last.
+    const list = instructions.indexOf("**List the staff (LeadMagic).**");
+    const search = instructions.indexOf("**Search by title (Hunter), only when the list has no match");
+    const findymail = instructions.indexOf("**Findymail by title, only while it answers,**");
+    assert(list > 0 && list < search && search < findymail, `${id} route order`);
+    assert(instructions.includes("Find the email for the chosen person only."));
+    assert(instructions.includes("A refused call costs nothing: go to the next step at once."));
     assert(instructions.includes("a retry-after time"));
     assert(instructions.includes("Reject anyone whose company domain doesn't match the target company"));
     assert(instructions.includes("the provider is unavailable right now; you were not charged"));
+    tables.push(titleTable(raw));
   }
+  assert(tables[0].includes("Managing Partner"));
+  assert.equal(tables[1], tables[0]);
   const route = (id) => readJson(`skills/${id}/skill.json`).dependencies.catalog_tools.filter((tool) => CONTACT_ROUTE.includes(tool.tool_id));
   assert.deepEqual(route("sales-qualified-accounts"), route("lead-list"));
+  assert.equal(route("lead-list")[0].tool_id, "leadmagic.employee-finder");
 });
 
 test("both Skills write one CRM-ready column set without tool names", () => {

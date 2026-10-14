@@ -3,7 +3,7 @@
   "schema_version": 2,
   "id": "sales-qualified-accounts",
   "title": "Research My Accounts",
-  "version": "6.0.0",
+  "version": "6.1.0",
   "status": "verified",
   "customer_proven": false,
   "summary": "For founders and small teams with a list of target companies: answer five questions, approve one maximum price, and your agent returns a card per company saying whether to contact it now, why, with dated sources, and whom.",
@@ -101,22 +101,22 @@
       {
         "tool_id": "brightdata.web-scrape",
         "required": false,
-        "purpose": "Read one page of the company's own site when the agent cannot read web pages itself."
-      },
-      {
-        "tool_id": "hunter.domain-email-search-flex",
-        "required": true,
-        "purpose": "People route 1: people at the company by job title, with their work email and the pages where they were found."
+        "purpose": "Read one page when the agent cannot read it itself or the site blocks the agent's reader."
       },
       {
         "tool_id": "leadmagic.employee-finder",
         "required": true,
-        "purpose": "People route 2: up to 20 people at the company with their titles; the agent keeps only matching titles."
+        "purpose": "People step 1: list 10 people at the company (20 above 50 staff) with their titles; the agent picks the best title match."
+      },
+      {
+        "tool_id": "hunter.domain-email-search-flex",
+        "required": true,
+        "purpose": "People step 2: search by job title, with the work email and source pages, only when the staff list has no match."
       },
       {
         "tool_id": "findymail.search-employees",
         "required": false,
-        "purpose": "People route 3: one person by job title, used only while the provider answers."
+        "purpose": "People step 3: one person by job title, only while the provider answers, in place of step 2 when Hunter is unavailable."
       },
       {
         "tool_id": "exa.people-search",
@@ -126,7 +126,7 @@
       {
         "tool_id": "quickenrich.people-email-find",
         "required": true,
-        "purpose": "Work email for a person found on route 2 or 3, from their profile URL or name and company domain."
+        "purpose": "Work email for the chosen person from the staff list or Findymail, from their profile URL or name and company domain."
       },
       {
         "tool_id": "leadmagic.people-email-find",
@@ -144,7 +144,7 @@
   "inputs": [
     "What you sell, in one sentence",
     "The companies: paste names or websites, or attach a CSV",
-    "Who buys: job titles (default: Founder or CEO at companies of up to 50 staff, otherwise the Head or VP of the team that would use what you sell)",
+    "Who buys: job titles (default set by the kind and size of company and shown in the plan: Managing Partner, Partner, Director or Owner at accountants, law firms, agencies and consultancies; Owner or Founder up to 10 staff; Founder or CEO up to 50; the Head or VP of the relevant team above that)",
     "Deal-breakers that rule a company out (default: none)",
     "How many to research (default 10, in your order)"
   ],
@@ -157,9 +157,9 @@
   ],
   "cost": {
     "currency": "USD",
-    "model": "You approve one maximum and pay only for calls that complete. Per company: a website lookup when only a name is given, company data, one news search and one page read when the agent cannot read pages itself, then up to two people searches, up to two email lookups, a role check when needed and one email check. Companies skipped early are replaced from your list, up to twice the number asked for. Refused calls are not charged.",
-    "trial_safe_max_usd": "0.770000",
-    "notes": "Prices inspected 14 Oct 2026: website lookup $0.0025; company data $0.0067; news search $0.0025; page read $0.0033; Hunter people search $0.0335 for up to 10 people (billed per 10 results; $0.335 is the listed price for 100); LeadMagic list of 20 people $0.035; Findymail title search $0.0278 per person; role check $0.0098; email lookup $0.0068, second lookup $0.035; email check $0.0025. One company costs at most $0.1376 and a replacement $0.015. Maximum: 5 companies $0.77 (the trial), 10 companies $1.53 from a longer list or $1.38 from a list of exactly 10. Most runs cost far less. The Skill inspects prices again before every quote."
+    "model": "You approve one maximum and pay only for calls that complete. Per company: a website lookup when only a name is given, company data (reused from a same-day Find Leads hand-off), one news search and one paid page read in case a site blocks the agent's reader, then a staff list, a title search only when the list has no match, up to three email lookups, a role check when needed and one email check. Companies skipped early are replaced from your list, up to twice the number asked for. Refused calls are not charged.",
+    "trial_safe_max_usd": "0.830000",
+    "notes": "Prices inspected 14 Oct 2026: website lookup $0.0025; company data $0.0067; news search $0.0025; page read $0.0033; LeadMagic staff list $0.0175 for 10 people, $0.035 for 20; Hunter title search $0.0335 for up to 10 people (billed per 10 results; $0.335 is the listed price for 100); Findymail title search $0.0278 per person; role check $0.0098; email lookup $0.0068, second lookup $0.035; email check $0.0025. One company costs at most $0.1444 and a replacement $0.015. Maximum: 5 companies $0.80, 10 companies $1.60 from a longer list or $1.45 from a list of exactly 10; add $0.0033 per company when the agent cannot read web pages itself ($0.83 for the 5-company trial, $1.66 and $1.48). Companies handed over by Find Leads the same day cost far less: 7 cost at most $0.05. The Skill inspects prices again before every quote."
   },
   "approvals": [
     "Approve one maximum price before the first paid call",

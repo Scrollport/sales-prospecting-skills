@@ -20,12 +20,13 @@ File: {file name} ({researched} rows).
 - **Why not yet:** Nothing new in the last 90 days. Watch for hiring in finance or a new site.
 - **Fit:** Two dental clinics in Leeds, 18 staff · [website](https://example.net/about)
 - **Who:** Jo Sample, Managing Director · catch-all: test first · checked 14 Oct 2026 · jo@example.net
-- **Opening question:** "When you add a third clinic, who will approve supplier invoices across the sites?"
+- **Opening question (from fit, as there is no why now):** "How do you approve supplier invoices across your two clinics today?"
 
 ### Skipped
 
 - **Example Smiles Ltd:** not a fit: 3 staff, below your minimum of 10 · [source](https://example.org/team)
 - **{company}:** couldn't identify the company from the name given
+- **{company}:** website now redirects to {other firm}: merged or acquired
 
 {n} failed: provider unavailable, not charged. Retry with the backup route for up to ${x}?
 {n} more on your list. Research the next {count} for up to ${x}?
@@ -56,7 +57,7 @@ File: {file name} ({researched} rows).
 | Northwind Dental Group | Own site | 14 Oct 2026 | {link} | 16 practices listed |
 
 **News that didn't count:** {company}: {item} is from {date}, more than 90 days
-ago.
+ago. {company}: {award or anniversary} isn't about what you sell.
 
 **Every paid call**
 

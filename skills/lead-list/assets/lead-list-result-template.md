@@ -33,18 +33,22 @@ stay under 1%.
 - This is a summary, not legal advice.
 
 **Research the top 10 →** See which of these to contact now, why (with dated
-sources) and what to ask first.
+sources) and what to ask first. When fewer than 10 are ready, offer them all:
+"Research these {ready} →".
 
 ## Details
 
 **How the list was built:** {found} companies found → {checked} checked →
 {fit} fit → {searched} searched → {people} people found → {ready} ready.
+{Only if it happened: Paused after 10 companies with {n} ready; you chose
+{other titles, a smaller batch or to carry on}.}
 
 **Left out**
 
 | Company | Reason |
 | --- | --- |
 | {company} | Not a fit: {reason} |
+| {company} | Website now redirects to {other firm}: merged or acquired |
 | {company} | No one with those titles found |
 | {company} | Provider unavailable, not charged |
 | {company} | Email didn't pass the check |

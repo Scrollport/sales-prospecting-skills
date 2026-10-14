@@ -1,5 +1,37 @@
 # Changelog
 
+## 2.1.0 — 2026-10-14
+
+Fixes from the paid verification run of 2.0.0 on "UK accounting firms with 10
+to 50 staff", which returned only 7 of 25 ready contacts for $2.32: Hunter's
+title search found no Founder, CEO or Managing Director at 35 of 42 fitting
+firms and charged for every empty search, while the firms' staff lists showed
+Partner, Managing Partner, Director and Owner.
+
+- Default titles now follow the kind and size of company and appear in the
+  plan: Managing Partner, Partner, Director or Owner at accountants, law firms,
+  agencies and consultancies; Owner, Founder or Director up to 10 staff;
+  Founder, CEO or Managing Director up to 50; the Head or VP of the relevant
+  team above that.
+- Cheaper route: list the staff first (LeadMagic, 10 people, or 20 above 50
+  staff), pick the best title match locally, then look up and check the email
+  for the chosen person only. Hunter's title search runs only when the list has
+  no match and Hunter knows named people at the company. A miss moves on to the
+  next company; the second email lookup is kept for when fitting companies run
+  out.
+- Stop-loss: after the first 10 companies, a run with fewer than 3 ready
+  contacts pauses, shows what has been spent and the titles the staff lists
+  showed, and offers other titles or a smaller batch.
+- A free check of where each website redirects leaves out merged or acquired
+  firms before any money is spent on them.
+- Source URLs are the page the fact came from, never a search-results link.
+- When fewer than 10 contacts are ready, the hand-off to Research My Accounts
+  passes all of them.
+- At prices inspected on 14 October 2026, 25 contacts cost at most $1.76 and
+  the 10-contact trial at most $0.71. A contact found on the first try costs
+  $0.0335; at an 85% staff-list match and 70% email find per lookup a run
+  averages about $0.054 per ready contact, about $1.35 for 25.
+
 ## 2.0.0 — 2026-10-14
 
 Renamed **Find Leads**: describe your customer; get 25 decision-makers with

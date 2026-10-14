@@ -1,5 +1,28 @@
 # Changelog
 
+## 6.1.0 — 2026-10-14
+
+Clarifications from the live verification of 6.0.0 on 14 October 2026, and the
+new shared people route.
+
+- Company data from a same-day Find Leads hand-off is reused and counts as the
+  first of the three sources.
+- When the news search shows a relative date such as "3 months ago", the agent
+  opens the item to read the exact date.
+- An award counts as a why-now only if it is from the last 90 days and relates
+  to what the user sells; anniversaries and general rankings don't.
+- The quote allows one paid page read per company in case a site blocks the
+  agent's own reader.
+- A Not yet company with no why-now gets an opening question based on fit.
+- A website that now redirects to another company makes the verdict Skip:
+  merged or acquired.
+- Shares Find Leads 2.1.0's people route: staff list first with titles
+  filtered locally, Hunter's title search only when the list has no match,
+  then the email for the chosen person only. Default titles follow the kind and
+  size of company, and links are the page itself, never a search-results link.
+- At prices inspected on 14 October 2026, 10 companies from a longer list cost
+  at most $1.60 and the 5-company trial at most $0.83.
+
 ## 6.0.0 — 2026-10-14
 
 Renamed **Research My Accounts**: paste companies; learn which to contact now,

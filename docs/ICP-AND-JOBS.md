@@ -29,8 +29,8 @@ routing, attribution or forecasting.
 
 | Rank | Customer job | Result the customer gets | Coverage | Evidence |
 | --- | --- | --- | --- | --- |
-| 1 | Turn a description of my customer into people to contact | One decision-maker per company with a work email checked the same day and why the company fits, as a table and a CRM-ready CSV | Verified: `lead-list` (Find Leads) | 12 Oct 2026 run of Lead List 1.0.0: 3 of 3 decision-makers with verified emails at $0.082900. Verification of 2.0.0 is pending |
-| 2 | Decide which of my target companies to contact now, why and whom | One card per company: Contact now, Not yet or Skip, dated why-now, fit, contact and opening question, plus the same CSV | Verified: `sales-qualified-accounts` (Research My Accounts) | 12 Oct 2026 reverification of 5.1.0: one contact-ready account, two incomplete and one rejected at $0.468600. Verification of 6.0.0 is pending |
+| 1 | Turn a description of my customer into people to contact | One decision-maker per company with a work email checked the same day and why the company fits, as a table and a CRM-ready CSV | Verified: `lead-list` (Find Leads) | 12 Oct 2026 run of Lead List 1.0.0: 3 of 3 decision-makers with verified emails at $0.082900. The 14 Oct run of 2.0.0 failed with 7 of 25 ready at $2.32, because its default titles did not fit accounting firms; verification of 2.1.0 is pending |
+| 2 | Decide which of my target companies to contact now, why and whom | One card per company: Contact now, Not yet or Skip, dated why-now, fit, contact and opening question, plus the same CSV | Verified: `sales-qualified-accounts` (Research My Accounts) | 14 Oct 2026 verification of 6.0.0 on seven firms handed over by Find Leads: 1 Contact now, 5 Not yet and 1 Skip at $0.020800. Its people and email steps were last checked live on 12 Oct 2026 (5.1.0) |
 | 3 | Refresh or repair an existing contact list | Current role and deliverability check with accepted, incomplete and invalid rows | Not packaged | Needs privacy-minimised inputs, verification rules and a complete rehearsal |
 | 4 | Watch accounts for reasons to reach out | Dated public events per account, repeated on a schedule | Partly covered by the why-now step of Research My Accounts | Needs direct demand and a repeatable decision use |
 | 5 | Apply approved research to a CRM | Exact preflight diff and verified destination state | Withheld draft: `sales-prospecting-to-crm` | Every dependency and the complete write route must pass against a dedicated test destination |
@@ -64,8 +64,8 @@ approval, consumer or cadence.
 - **Proof:** a why-it-matched line for every company, dated and linked why-now
   evidence, same-day email checks and the exact amount spent; the requested
   number is not guaranteed.
-- **Low-friction trial:** 10 Find Leads contacts for at most $0.96, or 5
-  Research My Accounts companies for at most $0.77, at prices inspected on
+- **Low-friction trial:** 10 Find Leads contacts for at most $0.71, or 5
+  Research My Accounts companies for at most $0.83, at prices inspected on
   14 October 2026.
 - **Honest boundary:** a checked email and a reason to reach out now are not
   buying intent or sent outreach.

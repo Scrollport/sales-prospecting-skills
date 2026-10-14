@@ -5,13 +5,13 @@
   },
   "metadata": {
     "description": "Sales and prospecting Skills powered by Scrollport: Find Leads and Research My Accounts.",
-    "version": "6.0.0"
+    "version": "6.1.0"
   },
   "plugins": [
     {
       "name": "sales-prospecting-skills",
       "description": "Find Leads: describe your customer; get 25 decision-makers with verified work emails and why each company fits. Research My Accounts: paste companies; learn which to contact now, why (with dated sources) and whom.",
-      "version": "6.0.0",
+      "version": "6.1.0",
       "source": "./"
     }
   ]

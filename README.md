@@ -7,8 +7,8 @@ that complete.
 
 | Skill | What you get | Default run |
 | --- | --- | --- |
-| [Find Leads](skills/lead-list/SKILL.md) | Describe your customer; get 25 decision-makers with verified work emails and why each company fits. | 25 contacts, at most $2.38 at 14 October 2026 prices, about 10 minutes |
-| [Research My Accounts](skills/sales-qualified-accounts/SKILL.md) | Paste companies; learn which to contact now, why (with dated sources) and whom. | 10 companies, at most $1.53, about 10 minutes |
+| [Find Leads](skills/lead-list/SKILL.md) | Describe your customer; get 25 decision-makers with verified work emails and why each company fits. | 25 contacts, at most $1.76 at 14 October 2026 prices (about $1.35 in a typical run), about 10 minutes |
+| [Research My Accounts](skills/sales-qualified-accounts/SKILL.md) | Paste companies; learn which to contact now, why (with dated sources) and whom. | 10 companies, at most $1.60, about 10 minutes |
 
 Find Leads ends by offering to research its best 10 with Research My Accounts,
 and Research My Accounts offers Find Leads when you want more companies like
@@ -35,18 +35,20 @@ of every call sit in a Details section at the end.
 
 ## Proof so far
 
-- **Find Leads** was last verified on 12 October 2026 as Lead List 1.0.0. From
-  "UK fintech companies with 11 to 50 employees" it found 3 of 3
-  decision-makers with verified work emails for $0.0829
+- **Research My Accounts** 6.0.0 was verified on 14 October 2026 on seven
+  accounting firms handed over by Find Leads: one to contact now, five not yet
+  and one skipped because its website now redirects to the firm that bought
+  it, in 5 minutes for $0.0208
+  ([run notes](skills/sales-qualified-accounts/evidence/2026-10-14-verification.md);
+  [a sample from an earlier version](examples/qualified-accounts-verified-excerpt.md)).
+  Its people and email steps were last checked live on 12 October 2026.
+- **Find Leads** 2.0.0 did not pass its 14 October run: it looked for Founders
+  and CEOs, but accounting firms list Partners, Directors and Owners, so only 7
+  of 25 contacts were ready. Version 2.1.0 picks titles by kind of company and
+  lists the staff before paying for a title search; its verification is
+  pending. The last passing run was on 12 October 2026, as Lead List 1.0.0: 3 of
+  3 decision-makers with verified work emails for $0.0829
   ([run notes](skills/lead-list/evidence/2026-10-12-verification.md)).
-- **Research My Accounts** was last verified on 12 October 2026 as Qualified
-  Accounts to Contact 5.1.0. Of four UK dental groups, one was ready to
-  contact, two fitted but had no reachable buyer yet and one didn't fit, for
-  $0.4686
-  ([run notes](skills/sales-qualified-accounts/evidence/2026-10-12-reverification.md);
-  [an earlier sample report](examples/qualified-accounts-verified-excerpt.md)).
-- Find Leads 2.0.0 and Research My Accounts 6.0.0 change the method, so new
-  verification runs are pending.
 
 Neither run shows replies, meetings or revenue, and neither Skill is
 Customer-proven yet.
