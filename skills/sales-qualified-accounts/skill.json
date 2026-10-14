@@ -2,19 +2,25 @@
   "$schema": "../../skill.schema.json",
   "schema_version": 2,
   "id": "sales-qualified-accounts",
-  "title": "Qualified Accounts to Contact",
-  "version": "5.1.0",
+  "title": "Research My Accounts",
+  "version": "6.1.0",
   "status": "verified",
   "customer_proven": false,
-  "summary": "Research supplied accounts or discover prospects, cross-check fit and current context, and return verified professional contacts with explicit unknowns.",
-  "outcome": "A sourced account decision brief with fit evidence, observed pain or triggers, offer-relevance hypotheses, current decision-makers, verified work emails and explicit rejections.",
-  "boundary": "The Skill does not prove need, budget, timing, buying intent or sales qualification; guarantee the requested yield; infer private emails; send outreach; write to a CRM; or exceed the caller-approved spend ceiling.",
+  "summary": "For founders and small teams with a list of target companies: answer five questions, approve one maximum price, and your agent returns a card per company saying whether to contact it now, why, with dated sources, and whom.",
+  "outcome": "Paste companies; learn which to contact now, why (with dated sources) and whom.",
+  "boundary": "It researches the companies you give it; to find new companies, use Find Leads. It does not send email, add anyone to your CRM, guess addresses or spend more than the maximum you approve. A reason to reach out now is a timing signal, not proof that a company will buy.",
   "category": "sales-prospecting",
   "capabilities": [
     {
-      "id": "company-discovery",
+      "id": "company-domain-discovery",
       "tool_ids": [
-        "hunter.discover"
+        "hunter.domain-finder"
+      ]
+    },
+    {
+      "id": "company-enrichment",
+      "tool_ids": [
+        "hunter.companies-enrich"
       ]
     },
     {
@@ -36,22 +42,11 @@
       ]
     },
     {
-      "id": "email-verification",
-      "tool_ids": [
-        "hunter.email-verifier",
-        "millionverifier.people-email-verify"
-      ]
-    },
-    {
-      "id": "uk-company-records-research",
-      "tool_ids": [
-        "companies-house.company-search"
-      ]
-    },
-    {
       "id": "people-discovery",
       "tool_ids": [
-        "findymail.search-employees"
+        "leadmagic.employee-finder",
+        "findymail.search-employees",
+        "exa.people-search"
       ]
     },
     {
@@ -60,6 +55,12 @@
         "quickenrich.people-email-find",
         "leadmagic.people-email-find"
       ]
+    },
+    {
+      "id": "email-verification",
+      "tool_ids": [
+        "millionverifier.people-email-verify"
+      ]
     }
   ],
   "aliases": [
@@ -67,7 +68,8 @@
     "scrollport-qualified-accounts-weekly",
     "qualified-accounts-weekly",
     "accounts-to-contact",
-    "qualified-accounts-to-contact"
+    "qualified-accounts-to-contact",
+    "research-my-accounts"
   ],
   "license": "MIT",
   "instruction_path": "SKILL.md",
@@ -78,97 +80,101 @@
       "inspect_tool",
       "run_tool",
       "get_run",
-      "list_apps",
       "get_wallet"
     ],
     "catalog_tools": [
       {
-        "tool_id": "hunter.discover",
+        "tool_id": "hunter.domain-finder",
         "required": false,
-        "purpose": "Discover a bounded candidate pool when no account list is supplied, or resolve missing company identity."
+        "purpose": "Find a company's website when only its name is given."
+      },
+      {
+        "tool_id": "hunter.companies-enrich",
+        "required": true,
+        "purpose": "Industry, staff count, location and description for fit and deal-breakers."
       },
       {
         "tool_id": "serper.google-search",
         "required": true,
-        "purpose": "Resolve company identity and find bounded public evidence for hard profile claims."
+        "purpose": "News from the last 90 days, dated and linked, for why now."
       },
       {
         "tool_id": "brightdata.web-scrape",
+        "required": false,
+        "purpose": "Read one page when the agent cannot read it itself or the site blocks the agent's reader."
+      },
+      {
+        "tool_id": "leadmagic.employee-finder",
         "required": true,
-        "purpose": "Extract one selected first-party company page as evidence for fit and identity."
+        "purpose": "People step 1: list 10 people at the company (20 above 50 staff) with their titles; the agent picks the best title match."
       },
       {
         "tool_id": "hunter.domain-email-search-flex",
         "required": true,
-        "purpose": "Find a relevant current person and public professional work email for an accepted company."
-      },
-      {
-        "tool_id": "hunter.email-verifier",
-        "required": false,
-        "purpose": "Verify the selected work email when domain search does not return a sufficiently current valid status."
-      },
-      {
-        "tool_id": "companies-house.company-search",
-        "required": false,
-        "purpose": "Confirm the official identity and active status of a UK company when applicable."
+        "purpose": "People step 2: search by job title, with the work email and source pages, only when the staff list has no match."
       },
       {
         "tool_id": "findymail.search-employees",
         "required": false,
-        "purpose": "Find one current person holding an approved title at the domain when sources name nobody."
+        "purpose": "People step 3: one person by job title, only while the provider answers, in place of step 2 when Hunter is unavailable."
+      },
+      {
+        "tool_id": "exa.people-search",
+        "required": false,
+        "purpose": "Confirm a person's current role when the newest evidence is over a year old or sources disagree."
       },
       {
         "tool_id": "quickenrich.people-email-find",
-        "required": false,
-        "purpose": "Find the work address of a confirmed approved-role person when domain search does not return it."
+        "required": true,
+        "purpose": "Work email for the chosen person from the staff list or Findymail, from their profile URL or name and company domain."
       },
       {
         "tool_id": "leadmagic.people-email-find",
         "required": false,
-        "purpose": "Fallback work-address lookup used at most once when the first finder returns no address."
+        "purpose": "Second email lookup, used once when the first finds nothing."
       },
       {
         "tool_id": "millionverifier.people-email-verify",
-        "required": false,
-        "purpose": "Lower-cost deliverability check for a finder-returned work address."
+        "required": true,
+        "purpose": "Check each email the same day it is found: verified, catch-all or not ready."
       }
     ],
     "connected_apps": []
   },
   "inputs": [
-    "A narrow ideal-customer profile with geography, business type, size and hard exclusions",
-    "The offer or problem used to judge company fit",
-    "One buyer role or an ordered set of acceptable roles",
-    "A target number of accepted prospects and maximum total research spend",
-    "Existing customer, suppression and do-not-contact domains",
-    "Optional supplied account list and a must-have pain or trigger with freshness window"
+    "What you sell, in one sentence",
+    "The companies: paste names or websites, or attach a CSV",
+    "Who buys: job titles (default set by the kind and size of company and shown in the plan: Managing Partner, Partner, Director or Owner at accountants, law firms, agencies and consultancies; Owner or Founder up to 10 staff; Founder or CEO up to 50; the Head or VP of the relevant team above that)",
+    "Deal-breakers that rule a company out (default: none)",
+    "How many to research (default 10, in your order)"
   ],
   "outputs": [
-    "Up to the requested number of ranked contact-ready prospects with company fit evidence",
-    "One relevant current person and verified professional work email per accepted row",
-    "Incomplete and rejected candidates plus a complete research receipt",
-    "Reusable human-review artifact with explicit evidence and uncertainty",
-    "Observed pain or trigger, offer relevance, contrary evidence and next qualification question for each account"
+    "A summary line such as \"4 of 10 ready · 3 not yet · 3 skipped · $0.82 · 8 min\"",
+    "One card per company: Contact now, Not yet or Skip; why now with its date and link; why it fits with a link; who to contact with email status and date checked; and an opening question",
+    "A CSV with the Find Leads columns plus why now, its date and link, and the verdict",
+    "What could not be finished, with a priced retry, and a priced offer for the rest of your list",
+    "Details at the end: the sources checked and every paid call with its run ID and cost"
   ],
   "cost": {
     "currency": "USD",
-    "model": "One or more bounded company-discovery segments plus public research, one contact search, conditional email verification and an optional official company check per attempted prospect.",
-    "trial_safe_max_usd": "0.500000",
-    "notes": "Re-inspect and price the exact bounded plan, including minimum billing blocks, discarded candidates and conditional verification. The starter seeks up to five accepted accounts within $0.50 without guaranteeing yield."
+    "model": "You approve one maximum and pay only for calls that complete. Per company: a website lookup when only a name is given, company data (reused from a same-day Find Leads hand-off), one news search and one paid page read in case a site blocks the agent's reader, then a staff list, a title search only when the list has no match, up to three email lookups, a role check when needed and one email check. Companies skipped early are replaced from your list, up to twice the number asked for. Refused calls are not charged.",
+    "trial_safe_max_usd": "0.830000",
+    "notes": "Prices inspected 14 Oct 2026: website lookup $0.0025; company data $0.0067; news search $0.0025; page read $0.0033; LeadMagic staff list $0.0175 for 10 people, $0.035 for 20; Hunter title search $0.0335 for up to 10 people (billed per 10 results; $0.335 is the listed price for 100); Findymail title search $0.0278 per person; role check $0.0098; email lookup $0.0068, second lookup $0.035; email check $0.0025. One company costs at most $0.1444 and a replacement $0.015. Maximum: 5 companies $0.80, 10 companies $1.60 from a longer list or $1.45 from a list of exactly 10; add $0.0033 per company when the agent cannot read web pages itself ($0.83 for the 5-company trial, $1.66 and $1.48). Companies handed over by Find Leads the same day cost far less: 7 cost at most $0.05. The Skill inspects prices again before every quote."
   },
   "approvals": [
-    "Use existing authorisation covering offer, hard criteria, selection rules, roles, examination limit and maximum cost",
-    "Pause for server confirmation or a material change beyond the approved scope or retry allowance",
-    "No outreach or CRM write without explicit scope"
+    "Approve one maximum price before the first paid call",
+    "Approve again before anything that would go over it, including retries and the next batch from your list",
+    "Nothing is sent and nothing is added to your CRM"
   ],
   "compatibility": [
     "Agent Skills compatible host",
-    "One authorized Scrollport connection with apps, discover, inspect, run and wallet",
-    "A local file or conversation state for resumable research and the final receipt"
+    "One Scrollport connection that can search, inspect and run tools and read the wallet",
+    "Optional: web page reading in the host, which saves a paid page read per company",
+    "Somewhere to save the CSV and a small progress file"
   ],
   "evidence": {
-    "verified_at": "2026-10-12",
-    "review_due_at": "2026-11-11",
-    "summary_path": "evidence/2026-10-12-reverification.md"
+    "verified_at": "2026-10-14",
+    "review_due_at": "2026-11-13",
+    "summary_path": "evidence/2026-10-14-reverification.md"
   }
 }

@@ -1,57 +1,69 @@
 # Sales and prospecting Skills
 
-Turn a narrow ideal-customer profile into evidence-backed accounts and verified
-professional contacts without buying another prospecting subscription or
-accepting a black-box lead list.
+Two Skills for founders and small teams who sell to other businesses. Your
+agent runs them through one Scrollport connection and one prepaid wallet: you
+approve one maximum price before anything is spent, and you pay only for calls
+that complete.
 
-This package is for RevOps consultants, specialist agencies and lean
-demand-generation, GTM or revenue teams that need a small, reviewable research
-deliverable. Scrollport supplies current metered tools through one connection
-and wallet; the Skill keeps company fit, contact evidence, spend and uncertainty
-inspectable.
-
-## Start with the outcome
-
-| If you need to... | Use | Finished artifact |
+| Skill | What you get | Default run |
 | --- | --- | --- |
-| Get a fast list of decision-makers and verified work emails from a one-sentence profile | [`lead-list`](skills/lead-list/SKILL.md) | CSV of companies, one decision-maker each and a verified work email, with the bill per call |
-| Move from ICP to companies, relevant people and verified work emails | [`sales-qualified-accounts`](skills/sales-qualified-accounts/SKILL.md) | Ranked, human-review-ready account-and-contact list |
-| Research and mutate existing CRM contacts | `sales-prospecting-to-crm` is a withheld draft and is not installable | None until the write path is verified |
+| [Find Leads](skills/lead-list/SKILL.md) | Describe your customer; get 25 decision-makers with verified work emails and why each company fits. | 25 contacts, at most $1.76 at 14 October 2026 prices (about $1.35 in a typical run), about 10 minutes |
+| [Research My Accounts](skills/sales-qualified-accounts/SKILL.md) | Paste companies; learn which to contact now, why (with dated sources) and whom. | 10 companies, at most $1.60, about 10 minutes |
 
-The repository deliberately does not imply autonomous outreach, buying intent,
-sales qualification, CRM governance or broad revenue operations.
+Find Leads ends by offering to research its best 10 with Research My Accounts,
+and Research My Accounts offers Find Leads when you want more companies like
+your best fits. Both use the same route to find people, look up work emails and
+check them, and both write the same CRM-ready CSV columns. A third workflow,
+updating existing CRM contacts (`sales-prospecting-to-crm`), is an unpublished
+draft and can't be installed.
 
-## Inspect the proof before installing
+## What you get back
 
-- **Lead List**, [12 October 2026 live run](skills/lead-list/evidence/2026-10-12-verification.md):
-  - 100 UK fintech companies, 30 people and 3 decision-makers.
-  - 3 of 3 work emails found and verified.
-  - $0.082900 for 10 paid calls.
-  - Fit is judged from discovery data only.
-- **Qualified Accounts to Contact**, [12 October 2026 reverification](skills/sales-qualified-accounts/evidence/2026-10-12-reverification.md):
-  - A UK dental-group brief returned one contact-ready account, two research-qualified accounts with contacts incomplete, and one rejection.
-  - $0.468600, including diagnosis of a contact-route gap that 5.1.0 fixes.
-  - [The earlier five-prospect excerpt](examples/qualified-accounts-verified-excerpt.md) shows the full report format.
+Every result starts with a short summary, then the list:
 
-Neither run proves reply quality, pipeline, revenue or Customer-proven status.
+```text
+23 of 25 ready · 19 verified · 4 catch-all · $1.41 · 9 min
+Founders and CEOs at UK accounting firms with 10 to 50 staff, one per firm.
+CRM-ready file: find-leads-2026-10-14.csv (23 rows).
+2 firms had no Founder or CEO on record.
+```
 
-## Why this package is different
+After the summary comes a table (Find Leads) or one card per company (Research
+My Accounts), the CSV, anything that couldn't be done with a priced retry, and
+a short note on email rules in the US, UK, EU and Germany. Run IDs and the cost
+of every call sit in a Details section at the end.
 
-- **Evidence before volume:** every hard fit claim retains a source; weak rows
-  remain incomplete or rejected.
-- **Relevant people, not email dumps:** one current approved buyer role and one
-  verified professional work email are selected per accepted company.
-- **Caller-controlled scale and spend:** the target, batch plan, candidate limit
-  and maximum are approved before execution.
-- **Safe recovery:** agents checkpoint run ids, deduplicate globally and reuse
-  successful paid results.
-- **Research only:** no send, CRM write or consequential claim about a person is
-  hidden inside the workflow.
+## Proof so far
+
+- **Research My Accounts** 6.0.0 was verified on 14 October 2026 on seven
+  accounting firms handed over by Find Leads: one to contact now, five not yet
+  and one skipped because its website now redirects to the firm that bought
+  it, in 5 minutes for $0.0208
+  ([run notes](skills/sales-qualified-accounts/evidence/2026-10-14-verification.md);
+  [a sample from an earlier version](examples/qualified-accounts-verified-excerpt.md)).
+  Its people and email steps were last checked live on 12 October 2026.
+- **Find Leads** 2.0.0 did not pass its 14 October run: it looked for Founders
+  and CEOs, but accounting firms list Partners, Directors and Owners, so only 7
+  of 25 contacts were ready. Version 2.1.0 picks titles by kind of company and
+  lists the staff before paying for a title search; its verification is
+  pending. The last passing run was on 12 October 2026, as Lead List 1.0.0: 3 of
+  3 decision-makers with verified work emails for $0.0829
+  ([run notes](skills/lead-list/evidence/2026-10-12-verification.md)).
+
+Neither run shows replies, meetings or revenue, and neither Skill is
+Customer-proven yet.
+
+## What these Skills never do
+
+- Send emails or messages, or add anyone to your CRM or a sequence.
+- Guess email addresses or use personal ones.
+- Spend more than the maximum you approved. A call a provider can't serve is
+  not charged.
 
 ## Install
 
 Give your agent the package setup prompt from Scrollport to install every
-published outcome Skill.
+published Skill.
 
 Or add the repository as a Claude Code marketplace and install the package:
 
@@ -65,10 +77,10 @@ For commit-pinned installation, readiness checks and approval boundaries, read
 
 ## Bundle decisions
 
-[ICP and jobs](docs/ICP-AND-JOBS.md) records the customer, job ranking, current
-coverage and evidence gates that determine what belongs here. Supplied-account
-research, list repair, signal briefs and CRM writes remain separate candidates
-until each has its own valuable artifact and accepted complete rehearsal.
+[ICP and jobs](docs/ICP-AND-JOBS.md) records who these Skills are for, which
+jobs they cover and what evidence each needs. List repair, standalone signal
+briefs and CRM writes stay separate candidates until each has its own useful
+result and a complete accepted run.
 
 ## Contribute
 
