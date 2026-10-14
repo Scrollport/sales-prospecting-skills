@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "sales-prospecting-skills",
-  "description": "Verified account-and-contact research Skills powered by Scrollport.",
-  "version": "5.3.0",
+  "description": "Find Leads and Research My Accounts: decision-makers with verified work emails and why each company fits, and which of your target companies to contact now, why and whom. Powered by Scrollport.",
+  "version": "6.0.0",
   "author": {
     "name": "Scrollport"
   },

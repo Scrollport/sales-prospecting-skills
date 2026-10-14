@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import test from "node:test";
@@ -7,6 +7,58 @@ import { fileURLToPath } from "node:url";
 import { checkRepository, validateRepository } from "../scripts/validate.mjs";
 
 const root = resolve(fileURLToPath(new URL("..", import.meta.url)));
+const read = (path) => readFileSync(join(root, path), "utf8");
+const readJson = (path) => JSON.parse(read(path));
+const flat = (text) => text.replace(/\s+/g, " ");
+
+const SKILLS = ["lead-list", "sales-qualified-accounts"];
+const RESULT_TEMPLATES = {
+  "lead-list": "assets/lead-list-result-template.md",
+  "sales-qualified-accounts": "assets/qualified-accounts-template.md",
+};
+const LEAD_COLUMNS = ["First name", "Last name", "Title", "Company", "Company domain", "Why it matched", "Industry", "Size", "City", "Country", "Email", "Email status", "Verified on", "Source URL"];
+const ACCOUNT_COLUMNS = [...LEAD_COLUMNS, "Why now", "Why-now date", "Why-now URL", "Verdict"];
+const CONTACT_ROUTE = [
+  "hunter.domain-email-search-flex",
+  "leadmagic.employee-finder",
+  "findymail.search-employees",
+  "exa.people-search",
+  "quickenrich.people-email-find",
+  "leadmagic.people-email-find",
+  "millionverifier.people-email-verify",
+];
+
+// RFC 4180 fields: a quoted field may hold commas and doubled quotes.
+function parseCsv(text) {
+  const rows = [];
+  let row = [];
+  let field = "";
+  let quoted = false;
+  for (let index = 0; index < text.length; index += 1) {
+    const char = text[index];
+    if (quoted) {
+      if (char === '"' && text[index + 1] === '"') {
+        field += '"';
+        index += 1;
+      } else if (char === '"') quoted = false;
+      else field += char;
+    } else if (char === '"') quoted = true;
+    else if (char === ",") {
+      row.push(field);
+      field = "";
+    } else if (char === "\n") {
+      row.push(field);
+      rows.push(row);
+      row = [];
+      field = "";
+    } else if (char !== "\r") field += char;
+  }
+  if (field || row.length) {
+    row.push(field);
+    rows.push(row);
+  }
+  return rows;
+}
 
 function fixture({ frontmatter = true, secret = false, undeclared = false, mutateManifest } = {}) {
   const dir = mkdtempSync(join(tmpdir(), "scrollport-skill-test-"));
@@ -128,33 +180,153 @@ test("the Sales outcome Skills and withheld CRM candidate are canonical without 
   );
 });
 
-test("qualified accounts keeps the former package ids as stable aliases", () => {
-  const manifest = JSON.parse(readFileSync(join(root, "skills", "sales-qualified-accounts", "skill.json"), "utf8"));
-  assert.equal(manifest.version, "5.1.0");
-  assert(manifest.aliases.includes("scrollport-qualified-accounts"));
-  assert(manifest.aliases.includes("scrollport-qualified-accounts-weekly"));
-  assert(manifest.inputs.some((input) => input.includes("target number")));
-  assert(manifest.inputs.some((input) => input.includes("maximum total research spend")));
+test("Research My Accounts keeps its id and former ids and asks five plain questions", () => {
+  const manifest = readJson("skills/sales-qualified-accounts/skill.json");
+  const instructions = flat(read("skills/sales-qualified-accounts/SKILL.md"));
+  assert.equal(manifest.title, "Research My Accounts");
+  assert.equal(manifest.version, "6.0.0");
+  assert.equal(manifest.outcome, "Paste companies; learn which to contact now, why (with dated sources) and whom.");
+  for (const alias of ["scrollport-qualified-accounts", "scrollport-qualified-accounts-weekly", "qualified-accounts-to-contact", "research-my-accounts"]) {
+    assert(manifest.aliases.includes(alias), alias);
+  }
+  assert.equal(manifest.inputs.length, 5);
+  assert(manifest.inputs[0].startsWith("What you sell"));
+  assert(manifest.inputs.some((input) => input.includes("default 10")));
+  assert(manifest.outputs.length <= 5);
+  // The spend input became one computed maximum that the user approves; the trial is five companies.
+  assert(manifest.approvals.some((approval) => approval.includes("one maximum price")));
+  assert.equal(manifest.cost.trial_safe_max_usd, "0.770000");
+  // The former examination and freshness inputs became defaults.
+  assert(instructions.includes("up to twice the number asked for in all"));
+  assert(instructions.includes("Anything older than 90 days does not count"));
+  // Lists the user supplies only: finding companies belongs to Find Leads.
+  assert(instructions.includes("hand over to Find Leads (`lead-list`)"));
+  assert(!manifest.dependencies.catalog_tools.some((tool) => tool.tool_id === "hunter.discover"));
+  // Research runs in parallel with at most three sources per company.
+  assert(instructions.includes("Read three sources, no more"));
+  assert(instructions.includes("Work on up to three companies at once"));
 });
 
-test("lead list stays a fast list that points to research for evidence", () => {
-  const manifest = JSON.parse(readFileSync(join(root, "skills", "lead-list", "skill.json"), "utf8"));
-  const instructions = readFileSync(join(root, "skills", "lead-list", "SKILL.md"), "utf8");
+test("Find Leads promises 25 verified decision-makers and offers research on the top 10", () => {
+  const manifest = readJson("skills/lead-list/skill.json");
+  const instructions = flat(read("skills/lead-list/SKILL.md"));
+  assert.equal(manifest.title, "Find Leads");
+  assert.equal(manifest.version, "2.0.0");
+  assert.equal(manifest.outcome, "Describe your customer; get 25 decision-makers with verified work emails and why each company fits.");
   assert.equal(manifest.customer_proven, false);
-  assert.equal(manifest.cost.trial_safe_max_usd, "0.250000");
-  assert(instructions.includes("sales-qualified-accounts"));
-  assert(/Never guess an address from a pattern/.test(instructions));
-  assert(readFileSync(join(root, "skills", "lead-list", "assets", "lead-list-template.csv"), "utf8").startsWith("company,domain,decision_maker,title"));
+  // The trial is the smallest choice, 10 contacts, priced from the 14 October 2026 inspection.
+  assert.equal(manifest.cost.trial_safe_max_usd, "0.960000");
+  assert(manifest.inputs.length <= 5 && manifest.outputs.length <= 5);
+  assert(manifest.inputs.some((input) => input.includes("default 25, one per company")));
+  assert(manifest.aliases.includes("find-leads"));
+  assert(instructions.includes("Never decide fit from the name alone"));
+  assert(instructions.includes("Research the top 10"));
+  assert(instructions.includes("`sales-qualified-accounts`"));
+  assert(instructions.includes("Never guess an address from a pattern"));
+  assert(instructions.includes("test first: send at most 50, keep going only if bounces stay under 1%"));
+  assert(instructions.includes("GDPR Article 14"));
+});
+
+test("both Skills share one people, email and check route", () => {
+  for (const id of SKILLS) {
+    const manifest = readJson(`skills/${id}/skill.json`);
+    const tools = new Map(manifest.dependencies.catalog_tools.map((tool) => [tool.tool_id, tool]));
+    for (const toolId of CONTACT_ROUTE) assert(tools.has(toolId), `${id} lacks ${toolId}`);
+    // Hunter and LeadMagic are relied on; Findymail rejoins whenever it answers, so it never blocks readiness.
+    assert.equal(tools.get("hunter.domain-email-search-flex").required, true);
+    assert.equal(tools.get("leadmagic.employee-finder").required, true);
+    assert.equal(tools.get("findymail.search-employees").required, false);
+    const instructions = flat(read(`skills/${id}/SKILL.md`));
+    assert(instructions.includes("A refused call costs nothing: move to the next route at once."));
+    assert(instructions.includes("a retry-after time"));
+    assert(instructions.includes("Reject anyone whose company domain doesn't match the target company"));
+    assert(instructions.includes("the provider is unavailable right now; you were not charged"));
+  }
+  const route = (id) => readJson(`skills/${id}/skill.json`).dependencies.catalog_tools.filter((tool) => CONTACT_ROUTE.includes(tool.tool_id));
+  assert.deepEqual(route("sales-qualified-accounts"), route("lead-list"));
+});
+
+test("both Skills write one CRM-ready column set without tool names", () => {
+  const leads = parseCsv(read("skills/lead-list/assets/lead-list-template.csv"));
+  const accounts = parseCsv(read("skills/sales-qualified-accounts/assets/qualified-accounts-template.csv"));
+  assert.deepEqual(leads[0], LEAD_COLUMNS);
+  assert.deepEqual(accounts[0], ACCOUNT_COLUMNS);
+  for (const rows of [leads, accounts]) {
+    assert(rows.length > 1);
+    for (const row of rows) assert.equal(row.length, rows[0].length, row.join(","));
+  }
+  assert(!/tool|provider/i.test(ACCOUNT_COLUMNS.join(",")));
+  assert(flat(read("skills/lead-list/SKILL.md")).includes(`exactly these columns, in this order: ${LEAD_COLUMNS.join(", ")}.`));
+  assert(flat(read("skills/sales-qualified-accounts/SKILL.md")).includes(`(${LEAD_COLUMNS.join(", ")}) followed by Why now, Why-now date, Why-now URL and Verdict`));
+});
+
+test("one retry rule recovers a lost response without paying twice", () => {
+  for (const id of SKILLS) {
+    const instructions = flat(read(`skills/${id}/SKILL.md`));
+    assert(instructions.includes("read the saved run with `get_run <run_id>`"));
+    assert(instructions.includes("rerun the identical command without `--new` (MCP or HTTP: send the same idempotency_key)"));
+    assert(instructions.includes("`run_tool ... --new` (MCP or HTTP: a fresh idempotency_key)"));
+    assert(instructions.includes("Never start a replacement while a saved run is queued or running"));
+    // The contradiction behind the 12 October duplicate charge must not return.
+    assert(!instructions.includes("no idempotency key is accepted"));
+  }
+});
+
+test("results open with a summary and keep run IDs and costs in Details", () => {
+  const summaries = {
+    "lead-list": "23 of 25 ready · 19 verified · 4 catch-all · $1.41 · 9 min",
+    "sales-qualified-accounts": "4 of 10 ready · 3 not yet · 3 skipped · $0.82 · 8 min",
+  };
+  for (const id of SKILLS) {
+    assert(read(`skills/${id}/SKILL.md`).includes(summaries[id]));
+    const template = read(`skills/${id}/${RESULT_TEMPLATES[id]}`);
+    const details = template.indexOf("\n## Details\n");
+    assert(details > 0, `${id} template has no Details section`);
+    const firstScreen = template.slice(0, details);
+    const lines = firstScreen.split("\n").filter((line) => line.trim() && !line.startsWith("#"));
+    // After the short fill-in note, the result starts with its summary line.
+    const summary = lines.findIndex((line) => / ready · /.test(line));
+    assert(summary >= 0 && summary <= 3, `${id} does not open with its summary`);
+    assert(!/run id|receipt|ledger/i.test(firstScreen), `${id} shows bookkeeping before Details`);
+    assert(template.slice(details).includes("Run ID"));
+  }
+});
+
+test("customer-facing text uses plain words and keeps provider details private", () => {
+  const files = ["README.md", ".claude-plugin/plugin.json", ".claude-plugin/marketplace.json", "examples/qualified-accounts-verified-excerpt.md"];
+  for (const id of SKILLS) {
+    files.push(`skills/${id}/SKILL.md`, `skills/${id}/skill.json`);
+    for (const asset of readdirSync(join(root, "skills", id, "assets"))) files.push(`skills/${id}/assets/${asset}`);
+  }
+  const banned = [/examination limit/i, /freshness window/i, /\bbounded\b/i, /evidence-led/i, /qualification proof/i, /\btreg\b/i, /\bquota\b/i, /\bcredits?\b/i];
+  for (const file of files) {
+    const text = read(file);
+    for (const pattern of banned) assert(!pattern.test(text), `${file} uses ${pattern}`);
+    // "ledger" may appear only inside a Details appendix.
+    const details = text.indexOf("## Details");
+    assert(!/\bledger\b/i.test(details >= 0 ? text.slice(0, details) : text), `${file} says "ledger" outside Details`);
+  }
+  for (const file of ["README.md", ...SKILLS.map((id) => `skills/${id}/skill.json`)]) {
+    assert(!/\breceipts?\b/i.test(read(file)), `${file} mentions a receipt on a first screen`);
+  }
 });
 
 test("the public package includes proof, a template and a Claude marketplace", () => {
-  const plugin = JSON.parse(readFileSync(join(root, ".claude-plugin", "plugin.json"), "utf8"));
-  const marketplace = JSON.parse(readFileSync(join(root, ".claude-plugin", "marketplace.json"), "utf8"));
+  const plugin = readJson(".claude-plugin/plugin.json");
+  const marketplace = readJson(".claude-plugin/marketplace.json");
   assert.equal(plugin.name, "sales-prospecting-skills");
   assert.equal(plugin.version, marketplace.plugins[0].version);
+  assert.equal(plugin.version, readJson("package.json").version);
   assert.equal(marketplace.plugins[0].source, "./");
-  assert(/not\s+Customer-proven/.test(readFileSync(join(root, "examples", "qualified-accounts-verified-excerpt.md"), "utf8")));
-  assert(readFileSync(join(root, "skills", "sales-qualified-accounts", "assets", "qualified-accounts-template.md"), "utf8").includes("Outreach/CRM actions are outside this research scope unless separately authorized"));
+  const readme = flat(read("README.md"));
+  for (const id of SKILLS) {
+    const manifest = readJson(`skills/${id}/skill.json`);
+    assert(plugin.description.includes(manifest.title));
+    assert(marketplace.plugins[0].description.includes(manifest.title));
+    assert(readme.includes(manifest.outcome), `README lacks the ${manifest.title} promise`);
+    assert(read(`skills/${id}/${RESULT_TEMPLATES[id]}`).includes("Nothing was sent and nothing was added to your CRM"));
+  }
+  assert(/not\s+Customer-proven/.test(read("examples/qualified-accounts-verified-excerpt.md")));
 });
 
 // A due date remains current through the end of that UTC day.

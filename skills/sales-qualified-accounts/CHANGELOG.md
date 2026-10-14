@@ -1,5 +1,38 @@
 # Changelog
 
+## 6.0.0 — 2026-10-14
+
+Renamed **Research My Accounts**: paste companies; learn which to contact now,
+why (with dated sources) and whom.
+
+- Researches lists the user supplies only. Finding companies moves to Find
+  Leads, and each Skill offers the other as the next step.
+- Five plain questions: what you sell, which companies, who buys,
+  deal-breakers and how many to research (default 10). The questions about how
+  many candidates to examine and how old evidence may be are gone: companies
+  skipped early are replaced from the list, up to twice the number asked for,
+  and why-now evidence must come from the last 90 days.
+- One card per company: Contact now, Not yet or Skip; why now with its date
+  and link; fit with a link; who to contact with email status and the date
+  checked; and an opening question. A summary line comes first, and the CSV
+  uses the Find Leads columns plus Why now, Why-now date, Why-now URL and
+  Verdict.
+- Fixes the retry guidance. The old preamble said both that no idempotency key
+  is accepted and that keys should be kept for retries, which likely led to the
+  duplicate paid people search after a client timeout on 12 October. One rule
+  replaces it: read a saved run with `get_run`, or rerun the identical command
+  without `--new`; use `--new` only for an intentional repeat.
+- Faster: up to three companies in parallel with at most three sources each
+  (company data, news from the last 90 days and one page of the company's own
+  site), about 10 companies in 10 minutes and at most $1.53 at prices inspected
+  on 14 October 2026.
+- Shares the people, email and check route with Find Leads, including route
+  switching when a provider is unavailable. Drops company discovery, the UK
+  company register and the second email checker; adds company data, a website
+  lookup for names and a role check.
+- Breaking: new title, inputs, output and dependencies. The 12 October
+  evidence for 5.1.0 stands until the next verification run.
+
 ## 5.1.0 — 2026-10-12
 
 - Reach the confirmed buyer when domain search does not: one title-filtered

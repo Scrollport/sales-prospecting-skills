@@ -2,13 +2,13 @@
   "$schema": "../../skill.schema.json",
   "schema_version": 2,
   "id": "lead-list",
-  "title": "Lead List",
-  "version": "1.1.0",
+  "title": "Find Leads",
+  "version": "2.0.0",
   "status": "verified",
   "customer_proven": false,
-  "summary": "Turn a one-sentence customer profile into companies, a decision-maker at each and a verified work email, with the bill for every paid call.",
-  "outcome": "A CSV of companies, one title-matched decision-maker per company and their verified work email, with the funnel, skipped rows and a per-call receipt.",
-  "boundary": "The Skill judges company fit from discovery data only and does not research need, timing or intent; it does not guarantee yield, guess or return personal emails, send outreach, write to a CRM or exceed the caller-approved ceiling.",
+  "summary": "For founders and small teams who sell to businesses: describe your customer in one sentence, approve one maximum price, and your agent returns a CRM-ready list of decision-makers whose work emails were checked the same day.",
+  "outcome": "Describe your customer; get 25 decision-makers with verified work emails and why each company fits.",
+  "boundary": "It finds and checks contacts only. It does not send email, add anyone to your CRM or a sequence, guess addresses or spend more than the maximum you approve. Why a company fits comes from its company data and website; it does not show that the company wants to buy now.",
   "category": "sales-prospecting",
   "capabilities": [
     {
@@ -18,10 +18,23 @@
       ]
     },
     {
+      "id": "company-enrichment",
+      "tool_ids": [
+        "hunter.companies-enrich"
+      ]
+    },
+    {
+      "id": "company-email-discovery",
+      "tool_ids": [
+        "hunter.domain-email-search-flex"
+      ]
+    },
+    {
       "id": "people-discovery",
       "tool_ids": [
         "leadmagic.employee-finder",
-        "findymail.search-employees"
+        "findymail.search-employees",
+        "exa.people-search"
       ]
     },
     {
@@ -41,7 +54,8 @@
   "aliases": [
     "lead-list-builder",
     "fast-lead-list",
-    "decision-maker-emails"
+    "decision-maker-emails",
+    "find-leads"
   ],
   "license": "MIT",
   "instruction_path": "SKILL.md",
@@ -58,63 +72,79 @@
       {
         "tool_id": "hunter.discover",
         "required": true,
-        "purpose": "Discover up to 100 candidate companies for a natural-language profile in one call."
+        "purpose": "Find up to 100 companies that match the customer description in one search."
+      },
+      {
+        "tool_id": "hunter.companies-enrich",
+        "required": true,
+        "purpose": "Industry, staff count, location and description for the fit check and the why-it-matched line."
+      },
+      {
+        "tool_id": "hunter.domain-email-search-flex",
+        "required": true,
+        "purpose": "People route 1: people at the company by job title, with their work email and the pages where they were found."
       },
       {
         "tool_id": "leadmagic.employee-finder",
         "required": true,
-        "purpose": "List people and their titles at a shortlisted company domain."
+        "purpose": "People route 2: up to 20 people at the company with their titles; the agent keeps only matching titles."
       },
       {
         "tool_id": "findymail.search-employees",
         "required": false,
-        "purpose": "Fallback title-filtered people search, used once per company with count 1 only when the first people search is still refused after one retry."
+        "purpose": "People route 3: one person by job title, used only while the provider answers."
+      },
+      {
+        "tool_id": "exa.people-search",
+        "required": false,
+        "purpose": "Confirm a person's current role when the newest evidence is over a year old or sources disagree."
       },
       {
         "tool_id": "quickenrich.people-email-find",
         "required": true,
-        "purpose": "Find the selected person's work email cheaply from a profile URL or name and domain."
+        "purpose": "Work email for a person found on route 2 or 3, from their profile URL or name and company domain."
       },
       {
         "tool_id": "leadmagic.people-email-find",
         "required": false,
-        "purpose": "Fallback work-email finder used once when the first finder returns no email."
+        "purpose": "Second email lookup, used once when the first finds nothing."
       },
       {
         "tool_id": "millionverifier.people-email-verify",
         "required": true,
-        "purpose": "Verify the deliverability of each work email found."
+        "purpose": "Check each email the same day it is found: verified, catch-all or not ready."
       }
     ],
     "connected_apps": []
   },
   "inputs": [
-    "A one-sentence customer profile with business type, geography and size",
-    "Decision-maker titles in priority order",
-    "The number of companies to work through and a total spend ceiling",
-    "Existing customer, competitor and suppressed domains, and any earlier list to skip"
+    "Who you sell to, in one sentence, for example \"UK accounting firms with 10 to 50 staff\"",
+    "Job titles (default: Founder or CEO at companies of up to 50 staff, otherwise the Head or VP of the team that would use what you sell)",
+    "How many contacts: 10, 25, 50 or 100 (default 25, one per company)",
+    "Optional: a CSV of customers or contacts to leave out"
   ],
   "outputs": [
-    "A CSV with company, domain, decision-maker, title, profile URL, work email and verification status",
-    "The funnel from companies discovered to emails verified",
-    "Skipped companies and people with the reason",
-    "A receipt with tool, provider, run id and settled cost for every paid call, and the total"
+    "A summary line such as \"23 of 25 ready · 19 verified · 4 catch-all · $1.41 · 9 min\"",
+    "A table of contacts with a one-line reason each company fits",
+    "A CRM-ready CSV: name, title, company, website, why it matched, industry, size, city, country, email, email status, date checked and source",
+    "What could not be found and why, with a priced retry, and an offer to research the top 10 with Research My Accounts",
+    "Details at the end: how the list was built and every paid call with its run ID and cost"
   ],
   "cost": {
     "currency": "USD",
-    "model": "One company-discovery call, then per shortlisted company one people search (or its fallback when the provider refuses), up to two work-email lookups and one verification.",
-    "trial_safe_max_usd": "0.250000",
-    "notes": "Inspect current prices before quoting. Three companies settled at $0.082900 in the 12 October 2026 verification run; the quote uses per-call maximums and is higher. A refused call is not charged, so the fallback people search replaces the first one rather than adding to it."
+    "model": "You approve one maximum and pay only for calls that complete. Up to 4 company searches, company data for up to two companies per contact, then for each company one people search, up to two email lookups and one email check, plus a role check for at most one contact in five. Refused calls are not charged.",
+    "trial_safe_max_usd": "0.960000",
+    "notes": "Prices inspected 14 Oct 2026: company search $0.0025; company data $0.0067; Hunter people search $0.0335 for up to 10 people (billed per 10 results; $0.335 is the listed price for 100); LeadMagic list of 20 people $0.035; Findymail title search $0.0278 per person; role check $0.0098; email lookup $0.0068, second lookup $0.035; email check $0.0025. One contact costs at most $0.0793. Maximum: 10 contacts $0.96 (the trial), 25 contacts $2.38, 50 contacts $4.75, 100 contacts $9.48. Most runs cost far less because the first people route returns the email with the person. The Skill inspects prices again before every quote."
   },
   "approvals": [
-    "Approve the plan and total ceiling once before the first paid call",
-    "Ask again before any step that would exceed the approved ceiling",
-    "No outreach or CRM write without explicit scope"
+    "Approve one maximum price before the first paid call",
+    "Approve again before anything that would go over it, including a retry of companies that failed",
+    "Nothing is sent and nothing is added to your CRM"
   ],
   "compatibility": [
     "Agent Skills compatible host",
-    "One authorized Scrollport connection with discover, inspect, run and wallet",
-    "A local file for the CSV and receipt, so later runs can skip existing rows"
+    "One Scrollport connection that can search, inspect and run tools and read the wallet",
+    "Somewhere to save the CSV and a small progress file, so a later run can skip people you already have"
   ],
   "evidence": {
     "verified_at": "2026-10-12",
