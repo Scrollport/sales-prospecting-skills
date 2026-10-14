@@ -147,8 +147,8 @@
     "Somewhere to save the CSV and a small progress file, so a later run can skip people you already have"
   ],
   "evidence": {
-    "verified_at": "2026-10-12",
-    "review_due_at": "2026-11-11",
-    "summary_path": "evidence/2026-10-12-verification.md"
+    "verified_at": "2026-10-14",
+    "review_due_at": "2026-11-13",
+    "summary_path": "evidence/2026-10-14-verification.md"
   }
 }
