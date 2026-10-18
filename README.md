@@ -1,6 +1,6 @@
 # Sales and prospecting Skills
 
-Two Skills for founders and small teams who sell to other businesses. Your
+Two Skills for selling to other businesses. Your
 agent runs them through one Scrollport connection and one prepaid wallet: you
 approve one maximum price before anything is spent, and you pay only for calls
 that complete.

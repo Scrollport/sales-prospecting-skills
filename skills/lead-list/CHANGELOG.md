@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.1 — 2026-10-18
+
+Wording only: the summary no longer names an audience. It starts "Describe
+the businesses you sell to in one sentence". The workflow, tools, prices and
+the 14 October verification are unchanged.
+
 ## 2.1.0 — 2026-10-14
 
 Fixes from the paid verification run of 2.0.0 on "UK accounting firms with 10

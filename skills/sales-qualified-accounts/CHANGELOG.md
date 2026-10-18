@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.1.1 — 2026-10-18
+
+Wording only: the summary no longer names an audience. It starts "Start from
+a list of target companies". The workflow, tools, prices and the 14 October
+verification are unchanged.
+
 ## 6.1.0 — 2026-10-14
 
 Clarifications from the live verification of 6.0.0 on 14 October 2026, and the
