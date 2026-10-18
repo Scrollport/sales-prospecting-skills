@@ -184,7 +184,7 @@ test("Research My Accounts keeps its id and former ids and asks five plain quest
   const manifest = readJson("skills/sales-qualified-accounts/skill.json");
   const instructions = flat(read("skills/sales-qualified-accounts/SKILL.md"));
   assert.equal(manifest.title, "Research My Accounts");
-  assert.equal(manifest.version, "6.1.0");
+  assert.equal(manifest.version, "6.1.1");
   assert.equal(manifest.outcome, "Paste companies; learn which to contact now, why (with dated sources) and whom.");
   for (const alias of ["scrollport-qualified-accounts", "scrollport-qualified-accounts-weekly", "qualified-accounts-to-contact", "research-my-accounts"]) {
     assert(manifest.aliases.includes(alias), alias);
@@ -228,7 +228,7 @@ test("Find Leads promises 25 verified decision-makers and offers research on the
   const manifest = readJson("skills/lead-list/skill.json");
   const instructions = flat(read("skills/lead-list/SKILL.md"));
   assert.equal(manifest.title, "Find Leads");
-  assert.equal(manifest.version, "2.1.0");
+  assert.equal(manifest.version, "2.1.1");
   assert.equal(manifest.outcome, "Describe your customer; get 25 decision-makers with verified work emails and why each company fits.");
   assert.equal(manifest.customer_proven, false);
   // The trial is the smallest choice, 10 contacts, priced from the 14 October 2026 inspection.
@@ -378,6 +378,15 @@ test("the public package includes proof, a template and a Claude marketplace", (
     assert(read(`skills/${id}/${RESULT_TEMPLATES[id]}`).includes("Nothing was sent and nothing was added to your CRM"));
   }
   assert(/not\s+Customer-proven/.test(read("examples/qualified-accounts-verified-excerpt.md")));
+});
+
+// The Skills serve anyone who sells to businesses, so their customer-facing text names no audience (18 Oct 2026).
+test("summaries name no audience", () => {
+  for (const id of SKILLS) {
+    const manifest = readJson(`skills/${id}/skill.json`);
+    assert(!/founders and small teams/i.test([manifest.summary, manifest.outcome].join(" ")), `${id} names an audience`);
+  }
+  assert(!/founders and small teams/i.test(read("README.md")), "README names an audience");
 });
 
 // A due date remains current through the end of that UTC day.
