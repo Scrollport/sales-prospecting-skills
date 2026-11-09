@@ -3,7 +3,7 @@
   "schema_version": 2,
   "id": "sales-qualified-accounts",
   "title": "Research My Accounts",
-  "version": "6.1.1",
+  "version": "6.1.2",
   "status": "verified",
   "customer_proven": false,
   "summary": "Start from a list of target companies: answer five questions, approve one maximum price, and your agent returns a card per company saying whether to contact it now, why, with dated sources, and whom.",
